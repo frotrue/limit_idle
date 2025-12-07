@@ -6,7 +6,7 @@
  */
 function equation_calc(equation, x) {
     let temp = 0;
-    for (let i = 1; i < equation.length; i++) {
+    for (let i = 0; i < equation.length; i++) {
         temp += equation[i] * Math.pow(x, i);
     }
     return temp;
@@ -28,3 +28,9 @@ function differentiate(equation, x){
     }
     return temp_arr;
 }
+
+function formatNum(num) {
+    if (num < 1000) return Number(num).toFixed(0);
+    return Number(num).toExponential(1).replace("+", "");
+}
+
