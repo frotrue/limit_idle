@@ -1,5 +1,5 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "limit_temp_one",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
