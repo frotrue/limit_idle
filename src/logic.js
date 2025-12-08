@@ -1,9 +1,27 @@
 first_var = {
-    fx : [1],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
+    fx : [1,0,0,0,0,0,0,0,0,0,0],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
     fv : 0, // 게임내 기초 통화
     current_x : 0, // 현재 x값
     max_x : 10 // 최대 x값
 };
+upgrade_button_data = {
+    0: {price: 10, count: 1},
+    1: {price: 100, count: 0},
+    2: {price: 1000, count: 0},
+    3: {price: 1e4, count: 0},
+    4: {price: 1e5, count: 0},
+    5: {price: 1e6, count: 0},
+    6: {price: 1e7, count: 0},
+    7: {price: 1e8, count: 0},
+    8: {price: 1e9, count: 0},
+    9: {price: 1e10, count: 0},
+    10: {price: 1e11, count: 0},
+    11: {price: 1e12, count: 0},
+    12: {price: 1e13, count: 0},
+    13: {price: 1e14, count: 0},
+    14: {price: 1e15, count: 0},
+    15: {price: 1e16, count: 0},
+}
 
 const SUPERSCRIPT_MAP = {
     0: '⁰',
@@ -34,22 +52,25 @@ function make_view_function(fx){
         return;
     }
     let result = "f(x) = ";
-    if (fx.length==0){
+    if (fx.length===0){
         result += "";
-        return
+        return result;
     }
     for (let i = fx.length; i>0; i--) {
-        if (i==1){
+        if (fx[i-1]===0){
+            continue;
+        }
+        if (i===1){
             result += ""+fx[i-1].toString();
             break;
         }
         else{
-            let num = toSuperscript(fx[i-2]);
+            let num = toSuperscript(i-1);
             result += fx[i-1].toString()+"x"+num+" + ";
         }
     }
     return result;
-};
+}
 
 function make_view_fv(fv) {
     fv = formatNum(fv);
@@ -60,8 +81,30 @@ function updateUI(){
     $("#fv_view").html(make_view_fv(first_var.fv));
     $("#function_view").html(make_view_function(first_var.fx));
     $("#x_progress").html("max x: "+first_var.max_x.toString()+" | current x: "+first_var.current_x.toString());
-};
+}
 
+function upgrade_buttons(n){
+    function bt_ui_update(n){
+        $("#"+n+"_x_upgrade_bt").html(`<b>Upgrade X</b><br><span style="font-size:0.8em; color:#888">Price: 10</span>`);
+    }
+    if (first_var.fv >= upgrade_button_data[n].price){
+        first_var.fv -= upgrade_button_data[n].price;
+        upgrade_button_data[n].count++;
+        if(upgrade_button_data[n].count===10){
+            $("#"+(n+1)+"_x_upgrade_bt").css("display","inline-block");
+        }
+        if (upgrade_button_data[n].count%10===0){
+            first_var.fx[n] += 1;
+            first_var.fx[n] *=2;
+            upgrade_button_data[n].count++;
+            upgrade_button_data[n].price *=100;
+            bt_ui_update(n)
+            return
+        }
+        first_var.fx[n] += 1;
+        bt_ui_update(n)
+    }
+}
 
 
 
@@ -75,25 +118,16 @@ const gameData = {
 function coreGameLoop(currentTime) {
     // 1. 경과 시간 계산 (델타 타임)
     const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
-
-    // 2. 자원 계산 (시간 기반 증가)
-    // ... 로직 ...
-
-    // 3. UI 업데이트
     updateUI();
-
-    // 4. 다음 루프를 위해 시간 업데이트
     gameData.lastUpdateTime = currentTime;
     // console.log(i);
-
-    // 5. 다음 프레임 요청
     requestAnimationFrame(coreGameLoop);
 }
 function calc_fv_loop() {
     if (first_var.current_x < first_var.max_x) {
         first_var.current_x += 1;
     }
-    if (first_var.current_x == first_var.max_x) {
+    if (first_var.current_x === first_var.max_x) {
         first_var.fv += equation_calc(first_var.fx, first_var.current_x);
         first_var.current_x = 0;
     }
