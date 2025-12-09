@@ -21,16 +21,27 @@
             --panel-color: #1a1a1e;
             --text-main: #e0e0e0;
             --text-dim: #888;
-            --accent-color: #5e81ac; /* 차분한 블루 */
+            --accent-color: #5e81ac;
             --accent-hover: #81a1c1;
             --border-color: #333;
-            --highlight: #b48ead; /* 수학적 포인트 (보라) */
+            --highlight: #b48ead;
+        }
+
+        /* 모든 요소에 폰트 강제 적용 및 박스 크기 고정 */
+        * {
+            box-sizing: border-box; /* 패딩이 너비에 영향 주지 않도록 설정 */
+        }
+
+        body, button, input, textarea, select {
+            /* 폰트가 안 바뀌게 모든 입력 태그에 명시적으로 지정 */
+            font-family: 'Roboto Mono', monospace;
+            /* 숫자 간격을 일정하게 유지 (숫자가 바뀌어도 너비가 덜 흔들림) */
+            font-variant-numeric: tabular-nums;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Roboto Mono', monospace; /* 고정폭 폰트 적용 */
             margin: 0;
             padding: 0;
             display: flex;
@@ -40,9 +51,8 @@
 
         #main {
             width: 100%;
-            max-width: 1000px; /* 너무 넓게 퍼지지 않도록 제한 */
+            max-width: 1000px;
             padding: 20px;
-            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -56,14 +66,18 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
+
+            /* 높이가 내용물에 따라 덜컥거리지 않게 최소 높이 지정 (선택사항) */
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         #top p {
-            margin: 10px 0;
+            margin: 5px 0;
         }
 
-        /* 메인 자원 표시 (예: fv_view)를 강조 */
         #fv_view {
             font-size: 2.5rem;
             font-weight: 700;
@@ -81,18 +95,9 @@
             font-size: 0.9rem;
         }
 
-        /* --- 클러스터 영역 스타일 --- */
-        [id$="_cluster"] {
-            /* 나중에 2, 3, 4 클러스터가 생길 때를 대비한 공통 스타일 */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         /* --- 업그레이드 버튼 영역 --- */
         #frist_upgrade_buttons {
             display: grid;
-            /* 반응형 그리드: 화면 크기에 따라 2열~4열 자동 조정 */
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 12px;
             padding: 10px;
@@ -106,57 +111,27 @@
             border: 1px solid var(--accent-color);
             color: var(--text-main);
             padding: 15px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1rem;
+            font-size: 1rem; /* 글자 크기 고정 */
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s, transform 0.2s; /* border나 font 변화는 애니메이션 제외 */
             border-radius: 4px;
+            min-height: 80px; /* 버튼 높이 고정 (줄바꿈이 생겨도 버튼 크기 안 변함) */
 
-            /* --- 수정된 부분 시작 --- */
+            /* <br> 줄바꿈 문제 해결을 위한 Flex 설정 */
             display: flex;
-            flex-direction: column; /* 세로 정렬로 변경하여 줄바꿈 허용 */
-            justify-content: center; /* 세로 중앙 정렬 */
-            align-items: flex-start; /* 텍스트를 왼쪽으로 정렬 (취향에 따라 center로 변경 가능) */
-            /* --- 수정된 부분 끝 --- */
-
-            min-height: 60px;
-            position: relative;
-            overflow: hidden;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start; /* 왼쪽 정렬 */
         }
 
-        /* 버튼 호버 효과 */
         .upgrade_bt:hover {
             background-color: rgba(94, 129, 172, 0.15);
             border-color: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(94, 129, 172, 0.2);
         }
 
-        /* 버튼 클릭(Active) 효과 */
         .upgrade_bt:active {
             transform: translateY(0);
-        }
-
-        /* 비활성화 버튼 스타일 (JS에서 disabled 속성 추가 시) */
-        .upgrade_bt:disabled {
-            border-color: #444;
-            color: #555;
-            background-color: #111;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* 숨겨진 요소는 유지 (display: none은 CSS보다 인라인 스타일이 우선하므로 둠) */
-
-        /* --- 타이틀/탭바 예시 (추후 확장을 위해 제안) --- */
-        .game-header {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.8rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 3px;
         }
 
     </style>

@@ -85,7 +85,15 @@ function updateUI(){
 
 function upgrade_buttons(n){
     function bt_ui_update(n){
-        $("#"+n+"_x_upgrade_bt").html(`<b>Upgrade X</b><br><span style="font-size:0.8em; color:#888">Price: 10</span>`);
+        if (n===0){
+            let temp = '<b>Upgrade num</b><br><span style="font-size:0.8em; color:#888">Price: '+formatNum(upgrade_button_data[n].price)+'</span>'
+            $("#"+n+"_x_upgrade_bt").html(temp);
+        }
+        else {
+            let temp = '<b>Upgrade X'+toSuperscript(n)+'</b><br><span style="font-size:0.8em; color:#888">Price: '+formatNum(upgrade_button_data[n].price)+'</span>'
+            $("#"+n+"_x_upgrade_bt").html(temp);
+        }
+
     }
     if (first_var.fv >= upgrade_button_data[n].price){
         first_var.fv -= upgrade_button_data[n].price;
