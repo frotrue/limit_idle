@@ -1,0 +1,118 @@
+/* --- 기본 설정 (Base Reset) --- */
+:root {
+    --bg-color: #0f0f11;
+    --panel-color: #1a1a1e;
+    --text-main: #e0e0e0;
+    --text-dim: #888;
+    --accent-color: #5e81ac;
+    --accent-hover: #81a1c1;
+    --border-color: #333;
+    --highlight: #b48ead;
+}
+
+/* 모든 요소에 폰트 강제 적용 및 박스 크기 고정 */
+* {
+    box-sizing: border-box; /* 패딩이 너비에 영향 주지 않도록 설정 */
+}
+
+body, button, input, textarea, select {
+    /* 폰트가 안 바뀌게 모든 입력 태그에 명시적으로 지정 */
+    font-family: 'Roboto Mono', monospace;
+    /* 숫자 간격을 일정하게 유지 (숫자가 바뀌어도 너비가 덜 흔들림) */
+    font-variant-numeric: tabular-nums;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#main {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- 상단 정보창 (Dashboard) --- */
+#top {
+    background-color: var(--panel-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+
+    /* 높이가 내용물에 따라 덜컥거리지 않게 최소 높이 지정 (선택사항) */
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#top p {
+    margin: 5px 0;
+}
+
+#fv_view {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--highlight);
+    text-shadow: 0 0 10px rgba(180, 142, 173, 0.3);
+}
+
+#function_view {
+    font-size: 1.2rem;
+    color: var(--accent-hover);
+}
+
+#x_progress {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* --- 업그레이드 버튼 영역 --- */
+#first_upgrade_buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+/* --- 개별 버튼 스타일 --- */
+.upgrade_bt {
+    background-color: black;
+    border: 1px solid var(--accent-color);
+    color: var(--text-main);
+    padding: 15px;
+    font-size: 1rem; /* 글자 크기 고정 */
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s; /* border나 font 변화는 애니메이션 제외 */
+    border-radius: 4px;
+    min-height: 80px; /* 버튼 높이 고정 (줄바꿈이 생겨도 버튼 크기 안 변함) */
+
+    /* <br> 줄바꿈 문제 해결을 위한 Flex 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.upgrade_bt:hover {
+    background-color: rgba(94, 129, 172, 0.15);
+    border-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.upgrade_bt:active {
+    transform: translateY(0);
+}
