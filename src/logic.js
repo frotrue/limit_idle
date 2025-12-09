@@ -2,7 +2,8 @@ first_var = {
     fx : [1,0,0,0,0,0,0,0,0,0,0],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
     fv : 0, // 게임내 기초 통화
     current_x : 0, // 현재 x값
-    max_x : 10 // 최대 x값
+    max_x : 10, // 최대 x값
+    x_increase : 1
 };
 upgrade_button_data = {
     0: {price: 10, count: 1},
@@ -71,6 +72,17 @@ function make_view_function(fx){
     }
     return result;
 }
+function change_cluster(n){
+    for (let i = 1; i <=6 ; i++) {
+        if (i===n){
+            $(i.toString()+"#cluster_").css("display","block");
+        }
+        else {
+            $(i.toString()+"#cluster_").css("display","none");
+        }
+    }
+}
+
 
 function make_view_fv(fv) {
     fv = formatNum(fv);
@@ -116,33 +128,30 @@ function upgrade_buttons(n){
 
 
 
-
-
-
 const gameData = {
     lastUpdateTime: performance.now()
 };
 
 function coreGameLoop(currentTime) {
-    // 1. 경과 시간 계산 (델타 타임)
     const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
     updateUI();
     gameData.lastUpdateTime = currentTime;
     // console.log(i);
     requestAnimationFrame(coreGameLoop);
 }
+
 function calc_fv_loop() {
     if (first_var.current_x < first_var.max_x) {
-        first_var.current_x += 1;
+        first_var.current_x += first_var.x_increase;
     }
-    if (first_var.current_x === first_var.max_x) {
-        first_var.fv += equation_calc(first_var.fx, first_var.current_x);
+    if (first_var.current_x >= first_var.max_x) {
+        first_var.fv += equation_calc(first_var.fx, first_var.max_x);
         first_var.current_x = 0;
     }
     setTimeout(calc_fv_loop, 100);
 }
 
-// 게임 시작 시 코어 루프 시작
+
+
 requestAnimationFrame(coreGameLoop);
-// fv 계산 루프 시작
 calc_fv_loop();
