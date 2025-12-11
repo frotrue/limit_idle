@@ -22,6 +22,8 @@ upgrade_button_data = {
     13: {price: 1e14, count: 0},
     14: {price: 1e15, count: 0},
     15: {price: 1e16, count: 0},
+    max_x: {price: 1e5, count: 0},
+    x_increase: {price: 1e5, count: 0},
 }
 
 const SUPERSCRIPT_MAP = {
@@ -75,10 +77,14 @@ function make_view_function(fx){
 function change_cluster(n){
     for (let i = 1; i <=6 ; i++) {
         if (i===n){
-            $(i.toString()+"#cluster_").css("display","block");
+            $("#"+i.toString()+"_cluster").css("display","block");
+            $("#"+i.toString()+"_cluster_change").addClass("tab-button active");
+
         }
         else {
-            $(i.toString()+"#cluster_").css("display","none");
+            $("#"+i.toString()+"_cluster").css("display","none");
+            $("#"+i.toString()+"_cluster_change").removeClass("tab-button active");
+            $("#"+i.toString()+"_cluster_change").addClass("tab-button");
         }
     }
 }
@@ -126,6 +132,31 @@ function upgrade_buttons(n){
     }
 }
 
+function other_upgrade_buttons(n) {
+    if (n === 1) {
+        if (first_var.fv >= upgrade_button_data["max_x"].price) {
+            first_var.fv -= upgrade_button_data["max_x"].price;
+            first_var.max_x += 10;
+            upgrade_button_data["max_x"].count++;
+            upgrade_button_data["max_x"].price *= 6.5;
+            let temp = (upgrade_button_data["max_x"].price).toFixed(1);
+            temp = formatNum(temp);
+            $("#max_x_upgrade_bt").text("Price: " + temp);
+        }
+    }
+    if (n === 2) {
+        if (first_var.fv >= upgrade_button_data["x_increase"].price) {
+            first_var.fv -= upgrade_button_data["x_increase"].price;
+            first_var.x_increase += 1;
+            upgrade_button_data["x_increase"].count++;
+            upgrade_button_data["x_increase"].price *= 6.5;
+            let temp = (upgrade_button_data["x_increase"].price).toFixed(1);
+            temp = formatNum(temp);
+            $("#x_increase_upgrade_bt").text("Price: " + temp);
+        }
+    }
+}
+
 
 
 const gameData = {
@@ -154,4 +185,5 @@ function calc_fv_loop() {
 
 
 requestAnimationFrame(coreGameLoop);
+// setInterval(calc_fv_loop, 1000);
 calc_fv_loop();

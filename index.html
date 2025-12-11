@@ -23,7 +23,14 @@
 <div id="main">
     <div class="game-header">Limit Idle // Alpha Build</div>
 
-    <div id="1_cluster">
+    <div id="tabs">
+        <button class="tab-button active" id="1_cluster_change" onclick="change_cluster(1)">📈 Function</button>
+        <button class="tab-button" id="2_cluster_change" onclick="change_cluster(2)">✨ Core</button>
+        <button class="tab-button" id="3_cluster_change" onclick="change_cluster(3)">🌌 Limit</button>
+        <button class="tab-button" id="4_cluster_change" onclick="change_cluster(4)">⚙️ Options</button>
+    </div>
+
+    <div id="1_cluster" class="cluster active">
         <div id="top">
             <p id="function_view">f(x) = x + 1</p> <p id="fv_view">0.00</p>
             <p id="x_progress">Progress: 0%</p>
@@ -43,15 +50,32 @@
             <button id="8_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(8)" style="display: none">Price : 1e9</button>
             <button id="9_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(9)" style="display: none">Price : 1e10</button>
             <button id="10_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(10)" style="display: none">Price : 1e11</button>
+            <button id="11_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(11)" style="display: none">Price : 1e12</button>
         </div>
+
         <div id="second_upgrade_buttons">
-            <button id="max_x_upgrade"></button>
+            <button id="max_x_upgrade" class="upgrade_bt" onclick="other_upgrade_buttons(1)">
+                <span>Upgrade Max X<br><small style="opacity:0.7" id="max_x_upgrade_bt">Price: 1e5</small></span>
+            </button>
+            <button id="x_increase_upgrade" class="upgrade_bt" onclick="other_upgrade_buttons(2)">
+                <span>Upgrade X Increase<br><small style="opacity:0.7" id="x_increase_upgrade_bt">Price: 1e5</small></span>
+            </button>
         </div>
     </div>
 
-    <div id="2_cluster"></div>
-    <div id="3_cluster"></div>
-    <div id="4_cluster"></div>
+    <div id="2_cluster" class="cluster" style="display: none;">
+        <h2>Core Dimension</h2>
+        <p>Core 업그레이드 내용이 여기에 표시됩니다.</p>
+    </div>
+    <div id="3_cluster" class="cluster" style="display: none;">
+        <h2>Limit Break</h2>
+        <p>Limit Break 관련 내용이 여기에 표시됩니다.</p>
+    </div>
+    <div id="4_cluster" class="cluster" style="display: none;">
+        <h2>Options</h2>
+        <p>게임 설정 내용이 여기에 표시됩니다.</p>
+    </div>
+
 </div>
 </body>
 </html>

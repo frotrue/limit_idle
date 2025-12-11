@@ -4,10 +4,12 @@
     --panel-color: #1a1a1e;
     --text-main: #e0e0e0;
     --text-dim: #888;
-    --accent-color: #5e81ac;
+    --accent-color: #5e81ac; /* 메인 액센트 */
     --accent-hover: #81a1c1;
     --border-color: #333;
-    --highlight: #b48ead;
+    --highlight: #b48ead; /* 하이라이트 (돈 표시) */
+    --tab-inactive: #222; /* 탭 비활성화 배경 */
+    --tab-active: #1a1a1e; /* 탭 활성화 배경 (panel-color와 동일) */
 }
 
 /* 모든 요소에 폰트 강제 적용 및 박스 크기 고정 */
@@ -39,6 +41,15 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.game-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
 }
 
 /* --- 상단 정보창 (Dashboard) --- */
@@ -78,7 +89,58 @@ body {
     font-size: 0.9rem;
 }
 
-/* --- 업그레이드 버튼 영역 --- */
+/* --- 클러스터 내용 (탭 패널) --- */
+.cluster {
+    background-color: var(--panel-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* 탭 메뉴 전체 컨테이너 */
+#tabs {
+    display: flex;
+    gap: 5px; /* 버튼 간의 간격 */
+    padding: 0 10px;
+}
+
+/* 탭 버튼 스타일 */
+.tab-button {
+    flex-grow: 1; /* 너비를 동일하게 분할 */
+    background-color: var(--tab-inactive);
+    border: 1px solid var(--border-color);
+    border-bottom: none; /* 활성 탭이 아래 경계를 덮도록 */
+    color: var(--text-main);
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 8px 8px 0 0; /* 상단 모서리만 둥글게 */
+    white-space: nowrap;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: var(--border-color);
+}
+
+.tab-button.active {
+    background-color: var(--tab-active);
+    color: var(--accent-hover);
+    font-weight: 700;
+    border-top: 1px solid var(--accent-color);
+    border-left: 1px solid var(--accent-color);
+    border-right: 1px solid var(--accent-color);
+    z-index: 1; /* 아래 cluster의 border 위로 올라오도록 */
+}
+
+/* 활성 탭 아래 경계선이 안보이도록 처리 */
+#1_cluster, #2_cluster, #3_cluster, #4_cluster {
+    margin-top: -1px; /* 탭 버튼과 겹치도록 약간 올림 */
+}
+
+
+/* --- 업그레이드 버튼 영역 1 (기본 차원) --- */
 #first_upgrade_buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -86,6 +148,20 @@ body {
     padding: 10px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* --- 업그레이드 버튼 영역 2 (Max/Increase) --- */
+#second_upgrade_buttons {
+    /* 두 버튼만 표시되도록 2열로 고정 */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(94, 129, 172, 0.05); /* 액센트 색상으로 배경 구분 */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 20px;
 }
 
 /* --- 개별 버튼 스타일 --- */
@@ -96,15 +172,20 @@ body {
     padding: 15px;
     font-size: 1rem; /* 글자 크기 고정 */
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s; /* border나 font 변화는 애니메이션 제외 */
+    transition: background-color 0.2s, transform 0.2s;
     border-radius: 4px;
-    min-height: 80px; /* 버튼 높이 고정 (줄바꿈이 생겨도 버튼 크기 안 변함) */
+    min-height: 80px; /* 버튼 높이 고정 */
 
     /* <br> 줄바꿈 문제 해결을 위한 Flex 설정 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start; /* 왼쪽 정렬 */
+    text-align: left; /* 텍스트 정렬 */
+}
+
+.upgrade_bt span {
+    display: block; /* 줄바꿈이 깔끔하게 되도록 */
 }
 
 .upgrade_bt:hover {
