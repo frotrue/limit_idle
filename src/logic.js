@@ -1,9 +1,9 @@
 first_var = {
-    fx : [1,0,0,0,0,0,0,0,0,0,0],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
+    fx : [1,0,0,0,0,0,0,0,0,0,0,0,0],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
     fv : 0, // 게임내 기초 통화
     current_x : 0, // 현재 x값
-    max_x : 10, // 최대 x값
-    x_increase : 1
+    max_x : 1, // 최대 x값
+    x_increase : 0.1
 };
 upgrade_button_data = {
     0: {price: 10, count: 1},
@@ -22,8 +22,8 @@ upgrade_button_data = {
     13: {price: 1e14, count: 0},
     14: {price: 1e15, count: 0},
     15: {price: 1e16, count: 0},
-    max_x: {price: 1e5, count: 0},
-    x_increase: {price: 1e5, count: 0},
+    max_x: {price: 1e3, count: 0},
+    x_increase: {price: 1e3, count: 0},
 }
 
 const SUPERSCRIPT_MAP = {
@@ -64,12 +64,12 @@ function make_view_function(fx){
             continue;
         }
         if (i===1){
-            result += ""+fx[i-1].toString();
+            result += ""+((fx[i-1]).toFixed(0)).toString();
             break;
         }
         else{
             let num = toSuperscript(i-1);
-            result += fx[i-1].toString()+"x"+num+" + ";
+            result += ((fx[i-1]).toFixed(0)).toString()+"x"+num+" + ";
         }
     }
     return result;
@@ -98,7 +98,7 @@ function make_view_fv(fv) {
 function updateUI(){
     $("#fv_view").html(make_view_fv(first_var.fv));
     $("#function_view").html(make_view_function(first_var.fx));
-    $("#x_progress").html("max x: "+first_var.max_x.toString()+" | current x: "+first_var.current_x.toString());
+    $("#x_progress").html("max x: "+((first_var.max_x).toFixed(1)).toString()+" | current x: "+((first_var.current_x).toFixed(1)).toString());
 }
 
 function upgrade_buttons(n){
@@ -121,7 +121,8 @@ function upgrade_buttons(n){
         }
         if (upgrade_button_data[n].count%10===0){
             first_var.fx[n] += 1;
-            first_var.fx[n] *=2;
+            first_var.fx[n] *=1.5;
+            // first_var.fx[n] = (first_var.fx[n]).toFixed(1);
             upgrade_button_data[n].count++;
             upgrade_button_data[n].price *=100;
             bt_ui_update(n)
@@ -136,9 +137,9 @@ function other_upgrade_buttons(n) {
     if (n === 1) {
         if (first_var.fv >= upgrade_button_data["max_x"].price) {
             first_var.fv -= upgrade_button_data["max_x"].price;
-            first_var.max_x += 10;
+            first_var.max_x += 1;
             upgrade_button_data["max_x"].count++;
-            upgrade_button_data["max_x"].price *= 6.5;
+            upgrade_button_data["max_x"].price *= 3.5;
             let temp = (upgrade_button_data["max_x"].price).toFixed(1);
             temp = formatNum(temp);
             $("#max_x_upgrade_bt").text("Price: " + temp);
@@ -147,9 +148,9 @@ function other_upgrade_buttons(n) {
     if (n === 2) {
         if (first_var.fv >= upgrade_button_data["x_increase"].price) {
             first_var.fv -= upgrade_button_data["x_increase"].price;
-            first_var.x_increase += 1;
+            first_var.x_increase += 0.1;
             upgrade_button_data["x_increase"].count++;
-            upgrade_button_data["x_increase"].price *= 6.5;
+            upgrade_button_data["x_increase"].price *= 3.5;
             let temp = (upgrade_button_data["x_increase"].price).toFixed(1);
             temp = formatNum(temp);
             $("#x_increase_upgrade_bt").text("Price: " + temp);
