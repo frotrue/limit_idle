@@ -3,8 +3,12 @@ first_var = {
     fv : 0, // 게임내 기초 통화
     current_x : 0, // 현재 x값
     max_x : 1, // 최대 x값
-    x_increase : 0.1
+    x_increase : 0.01
 };
+second_var = {
+    differentiate_bonus : 0, // 미분 보너스
+};
+
 upgrade_button_data = {
     0: {price: 10, count: 1},
     1: {price: 100, count: 0},
@@ -23,7 +27,7 @@ upgrade_button_data = {
     14: {price: 1e15, count: 0},
     15: {price: 1e16, count: 0},
     max_x: {price: 1e3, count: 0},
-    x_increase: {price: 1e3, count: 0},
+    x_increase: {price: 10, count: 0},
 }
 
 const SUPERSCRIPT_MAP = {
@@ -98,7 +102,7 @@ function make_view_fv(fv) {
 function updateUI(){
     $("#fv_view").html(make_view_fv(first_var.fv));
     $("#function_view").html(make_view_function(first_var.fx));
-    $("#x_progress").html("max x: "+((first_var.max_x).toFixed(1)).toString()+" | current x: "+((first_var.current_x).toFixed(1)).toString());
+    $("#x_progress").html("max x: "+((first_var.max_x).toFixed(1)).toString()+" | current x: "+((first_var.current_x).toFixed(2)).toString()+" | increase x: "+((first_var.x_increase).toFixed(2)).toString());
 }
 
 function upgrade_buttons(n){
@@ -148,9 +152,9 @@ function other_upgrade_buttons(n) {
     if (n === 2) {
         if (first_var.fv >= upgrade_button_data["x_increase"].price) {
             first_var.fv -= upgrade_button_data["x_increase"].price;
-            first_var.x_increase += 0.1;
+            first_var.x_increase += 0.01;
             upgrade_button_data["x_increase"].count++;
-            upgrade_button_data["x_increase"].price *= 3.5;
+            upgrade_button_data["x_increase"].price *= 1.5;
             let temp = (upgrade_button_data["x_increase"].price).toFixed(1);
             temp = formatNum(temp);
             $("#x_increase_upgrade_bt").text("Price: " + temp);
@@ -168,7 +172,6 @@ function coreGameLoop(currentTime) {
     const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
     updateUI();
     gameData.lastUpdateTime = currentTime;
-    // console.log(i);
     requestAnimationFrame(coreGameLoop);
 }
 
@@ -177,7 +180,7 @@ function calc_fv_loop() {
         first_var.current_x += first_var.x_increase;
     }
     if (first_var.current_x >= first_var.max_x) {
-        first_var.fv += equation_calc(first_var.fx, first_var.max_x);
+        first_var.fv += equation_calc(first_var.fx, first_var.max_x) + second_var.differentiate_bonus;
         first_var.current_x = 0;
     }
     setTimeout(calc_fv_loop, 100);
@@ -188,3 +191,5 @@ function calc_fv_loop() {
 requestAnimationFrame(coreGameLoop);
 // setInterval(calc_fv_loop, 1000);
 calc_fv_loop();
+
+// todo 미분 탭 완성
