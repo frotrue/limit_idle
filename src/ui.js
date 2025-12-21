@@ -12,15 +12,17 @@ function change_cluster(n){
         }
     }
 }
-
 function updateUI() {
     $("#fv_view").html("fv = " + formatNum(first_var.fv));
-    $("#function_view").html(make_view_function(first_var.fx));
+    $("#function_view").html("f(x) = "+make_view_function(first_var.fx));
+    $("#fv_view_differentiate").html("fv = " + formatNum(first_var.fv));
     $("#x_progress").html(
         `max x: ${first_var.max_x.toFixed(1)} | ` +
         `current x: ${first_var.current_x.toFixed(2)} | ` +
         `increase x: ${first_var.x_increase.toFixed(2)}`
     );
+    $("#fb_view").html("fb = " + formatNum(second_var.fb));
+    $("#differentiate_value_view").html("f'("+second_var.differentiate_num.toFixed(1)+") = " + formatNum(differentiate(first_var.fx, second_var.differentiate_num)));
 }
 
 function make_view_fv(fv) {

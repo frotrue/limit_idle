@@ -19,12 +19,16 @@ function equation_calc(equation, x) {
  * @param x x값
  * @returns
  */
-function differentiate(equation, x){
+function differentiate(equation, x) {
     let temp_arr = [];
-    for (let i = 0; i <equation.length-1; i++) {
-        temp_arr[i] = equation[i] * (i+1);
+    for (let i = 1; i < equation.length; i++) {
+        temp_arr[i - 1] = equation[i].mul(i);
     }
-    if(x!==undefined){
+    while (temp_arr.length < equation.length) {
+        temp_arr.push(new Decimal(0));
+    }
+
+    if (x !== undefined) {
         return equation_calc(temp_arr, x);
     }
     return temp_arr;

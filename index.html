@@ -16,8 +16,10 @@
     <script src="src/break_infinity.js"></script>
     <script src="src/logic.js"></script>
     <script src="src/math.js"></script>
-    <script src="src/jquery-4.0.0-rc.1.js"></script>
+    <script src="src/ui.js"></script>
     <script src="src/data.js"></script>
+    <script src="src/jquery-4.0.0-rc.1.js"></script>
+<!--    <script src="src/data.js"></script>-->
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -35,8 +37,9 @@
     </div>
 
     <div id="1_cluster" class="cluster active">
-        <div id="top">
-            <p id="function_view">f(x) = x + 1</p> <p id="fv_view">0.00</p>
+        <div class="top">
+            <p id="function_view">f(x) = x + 1</p>
+            <p id="fv_view">0.00</p>
             <p id="x_progress">Progress: 0%</p>
         </div>
 
@@ -59,7 +62,7 @@
 
         <div id="second_upgrade_buttons">
             <button id="max_x_upgrade" class="upgrade_bt" onclick="other_upgrade_buttons(1)">
-                <span>Upgrade Max X<br><small style="opacity:0.7" id="max_x_upgrade_bt">Price: 1e3</small></span>
+                <span>Upgrade Max X<br><small style="opacity:0.7" id="max_x_upgrade_bt">Price: 1,000</small></span>
             </button>
             <button id="x_increase_upgrade" class="upgrade_bt" onclick="other_upgrade_buttons(2)">
                 <span>Upgrade X Increase<br><small style="opacity:0.7" id="x_increase_upgrade_bt">Price: 10</small></span>
@@ -68,8 +71,17 @@
     </div>
 
     <div id="2_cluster" class="cluster" style="display: none;">
-        <h2>Core Dimension</h2>
-        <p>Core 업그레이드 내용이 여기에 표시됩니다.</p>
+        <div class="top">
+            <p id="fv_view_differentiate" class="blue_view">0.00</p>
+            <p id="fb_view" class="fv_main_view">fb = 0</p>
+            <p id="differentiate_value_view" class="differentiate_progress">f'(1) = 0</p>
+        </div>
+        <br>
+        <div id="differentiate_buttons">
+            <button id="differentiate_upgrade_bt" class="upgrade_bt" onclick="differentiate_bt()">
+                <span>Differentiate<br><small style="opacity:0.7" id="differentiate_upgrade_price">fv > 1e10</small></span>
+            </button>
+        </div>
     </div>
     <div id="3_cluster" class="cluster" style="display: none;">
         <h2>Limit Break</h2>
