@@ -5,11 +5,12 @@
  * @returns 방정식에 x값을 대입한 결과값
  */
 function equation_calc(equation, x) {
-    let temp = 0;
+    let total = new Decimal(0);
     for (let i = 0; i < equation.length; i++) {
-        temp += equation[i] * Math.pow(x, i);
+        let term = equation[i].times(x.pow(i));
+        total = total.plus(term);
     }
-    return temp;
+    return total;
 }
 
 /**
@@ -29,8 +30,11 @@ function differentiate(equation, x){
     return temp_arr;
 }
 
-function formatNum(num) {
-    if (num < 1000) return Number(num).toFixed(0);
-    return Number(num).toExponential(1).replace("+", "");
-}
+function formatNum(decimal) {
+    const d = new Decimal(decimal);
 
+    if (d.lt(1e6)) {
+        return Math.floor(d.toNumber()).toLocaleString();
+    }
+    return d.toExponential(2).replace("+", "");
+}
