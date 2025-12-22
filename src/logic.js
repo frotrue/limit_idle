@@ -54,7 +54,8 @@ function resetUpgradeButtonDataVar() {
 
 second_var = {
     fb : new Decimal(0), // 미분 보너스
-    differentiate_num : new Decimal(0.1)
+    differentiate_num : new Decimal(0.1),
+    difference_cnt : new Decimal(0)
 };
 
 
@@ -142,6 +143,7 @@ function differentiate_bt() {
     if (first_var.fv.gte(new Decimal("1e10"))) {
         let diff_value = differentiate(first_var.fx, second_var.differentiate_num);
         second_var.fb = second_var.fb.plus(diff_value);
+        second_var.difference_cnt = second_var.difference_cnt.plus(1);
         resetFirstVar();
         resetUpgradeButtonDataVar();
         $("#max_x_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.max_x.price));
@@ -182,9 +184,9 @@ function calc_fv_loop() {
         first_var.fv = first_var.fv.plus(gain);
         first_var.current_x = new Decimal(0);
     }
-    setTimeout(calc_fv_loop, 100);
+    // setTimeout(calc_fv_loop, 100);
 }
 
 requestAnimationFrame(coreGameLoop);
 // setInterval(calc_fv_loop, 1000);
-calc_fv_loop();
+let loop = setInterval(calc_fv_loop,100);
