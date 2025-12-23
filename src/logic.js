@@ -1,3 +1,4 @@
+
 first_var = {
     fx : [new Decimal(1),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0),new Decimal(0)],// 0번째 인덱스 : 상수항, 1번째 인덱스 : x의 1제곱 계수, 2번째 인덱스 : x의 2제곱 계수 ...
     fv : new Decimal(0), // 게임내 기초 통화
@@ -31,7 +32,7 @@ function resetFirstVar() {
     first_var.fv = new Decimal(0);
     first_var.current_x = new Decimal(0);
     first_var.max_x = new Decimal(1);
-    first_var.x_increase = new Decimal(0.01);
+    first_var.x_increase = new Decimal(0.05);
     first_var.fx = [new Decimal(1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(v => new Decimal(v));
 }
 function resetUpgradeButtonDataVar() {
@@ -152,27 +153,16 @@ function differentiate_bt() {
             let label = i === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(i);
             let data = upgrade_button_data[i];
 
-            // 버튼 텍스트 갱신
             let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
             $("#" + i + "_x_upgrade_bt").html(temp);
 
-            // 0번(상수항) 빼고 모두 숨김 (조건에 따라 다시 오픈하게 함)
             if (i > 0) {
                 $("#" + i + "_x_upgrade_bt").css("display", "none");
             }
         }
     }
 }
-const gameData = {
-    lastUpdateTime: performance.now()
-};
 
-function coreGameLoop(currentTime) {
-    const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
-    updateUI();
-    gameData.lastUpdateTime = currentTime;
-    requestAnimationFrame(coreGameLoop);
-}
 
 function calc_fv_loop() {
     if (first_var.current_x.lt(first_var.max_x)) {
@@ -187,6 +177,85 @@ function calc_fv_loop() {
     // setTimeout(calc_fv_loop, 100);
 }
 
+
+function save_function(var_name){
+    localStorage.setItem(var_name.toString(), JSON.stringify(var_name));
+}
+
+function save() {
+    localStorage.setItem("first_var", JSON.stringify(first_var));
+    localStorage.setItem("upgrade_button_data", JSON.stringify(upgrade_button_data));
+    localStorage.setItem("second_var", JSON.stringify(second_var));
+    console.log("게임이 저장되었습니다.");
+}
+function load(){
+        // 1. LocalStorage에서 데이터 가져오기
+        const savedFirstVar = localStorage.getItem("first_var");
+        const savedUpgradeData = localStorage.getItem("upgrade_button_data");
+        const savedSecondVar = localStorage.getItem("second_var");
+
+        // 2. 데이터가 존재하는지 확인 후 복구
+        if (savedFirstVar && savedUpgradeData && savedSecondVar) {
+
+            // --- first_var 복구 ---
+            const parsedFirst = JSON.parse(savedFirstVar);
+            first_var.fv = new Decimal(parsedFirst.fv);
+            first_var.current_x = new Decimal(parsedFirst.current_x);
+            first_var.max_x = new Decimal(parsedFirst.max_x);
+            first_var.x_increase = new Decimal(parsedFirst.x_increase);
+            // 배열 내부의 각 요소를 다시 Decimal로 변환
+            first_var.fx = parsedFirst.fx.map(val => new Decimal(val));
+
+            // --- upgrade_button_data 복구 ---
+            const parsedUpgrade = JSON.parse(savedUpgradeData);
+            for (let key in parsedUpgrade) {
+                upgrade_button_data[key] = {
+                    price: new Decimal(parsedUpgrade[key].price),
+                    count: Number(parsedUpgrade[key].count)
+                };
+            }
+
+            // --- second_var 복구 ---
+            const parsedSecond = JSON.parse(savedSecondVar);
+            second_var.fb = new Decimal(parsedSecond.fb);
+            second_var.differentiate_num = new Decimal(parsedSecond.differentiate_num);
+            second_var.difference_cnt = new Decimal(parsedSecond.difference_cnt);
+
+            refreshUIAfterLoad();
+            console.log("게임 데이터를 불러왔습니다.");
+        } else {
+            console.log("저장된 데이터가 없습니다.");
+    }
+
+    function refreshUIAfterLoad() {
+        for (let i = 0; i <= 12; i++) {
+            let data = upgrade_button_data[i];
+            let label = i === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(i);
+            let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
+            $("#" + i + "_x_upgrade_bt").html(temp);
+
+            if (i < 12 && upgrade_button_data[i].count >= 10) {
+                $("#" + (i + 1) + "_x_upgrade_bt").css("display", "inline-block");
+            }
+        }
+        $("#max_x_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.max_x.price));
+        $("#x_increase_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.x_increase.price));
+    }
+}
+const gameData = {
+    lastUpdateTime: performance.now()
+};
+
+function coreGameLoop(currentTime) {
+    const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
+    updateUI();
+    gameData.lastUpdateTime = currentTime;
+    requestAnimationFrame(coreGameLoop);
+}
+
+// coreGameLoop()
 requestAnimationFrame(coreGameLoop);
 // setInterval(calc_fv_loop, 1000);
 let loop = setInterval(calc_fv_loop,100);
+let autosave = setInterval(save,300000)
+load();
