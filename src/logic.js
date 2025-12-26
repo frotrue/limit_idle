@@ -254,8 +254,8 @@ function coreGameLoop(currentTime) {
 }
 
 // coreGameLoop()
+load();
 requestAnimationFrame(coreGameLoop);
 // setInterval(calc_fv_loop, 1000);
 let loop = setInterval(calc_fv_loop,100);
 let autosave = setInterval(save,300000)
-load();
