@@ -84,8 +84,63 @@
         </div>
     </div>
     <div id="3_cluster" class="cluster" style="display: none;">
-        <h2>Limit Break</h2>
-        <p>Limit Break 관련 내용이 여기에 표시됩니다.</p>
+        <h2>Auto Automation</h2>
+        <div class="top">
+            <p class="blue_view" id="differentiate_cnt_view">Number of Differentiate : 0</p>
+        </div>
+
+        <div id="auto_upgrade_container">
+
+            <div class="auto_card">
+                <div class="auto_header">
+                    <span class="auto_title">Upgrade Constant term</span>
+                    <span class="auto_status status_inactive">Waiting</span>
+                </div>
+                <div class="auto_info">
+                    <div class="info_row">
+                        <span class="label">Interval:</span>
+                        <span class="value" id="auto_Constant_term">10.00s</span>
+                    </div>
+                    <div class="info_row">
+                        <span class="label">Condition:</span>
+                        <span class="value" id="auto_Constant_term_condition">differentiate cnt >= 1</span>
+                    </div>
+                </div>
+                <div class="auto_action">
+                    <label class="toggle_switch">
+                        <input type="checkbox" id="auto_toggle_0" onchange=autoupgrade_toggle(0)>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle_label">Active</span>
+                </div>
+            </div>
+
+            <div class="auto_card">
+                <div class="auto_header">
+                    <span class="auto_title">Upgrade X</span>
+                    <span class="auto_status status_inactive">Waiting</span>
+                </div>
+                <div class="auto_info">
+                    <div class="info_row">
+                        <span class="label">Interval:</span>
+                        <span class="value" id="auto_max_x_interval">10.00s</span>
+                    </div>
+                    <div class="info_row">
+                        <span class="label">Condition:</span>
+                        <span class="value" id="auto_max_x_condition">differentiate cnt >= 3</span>
+                    </div>
+                </div>
+                <div class="auto_action">
+                    <label class="toggle_switch">
+                        <input type="checkbox" id="auto_toggle_1" onchange="autoupgrade_toggle(1)">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle_label">Active</span>
+                </div>
+            </div>
+
+
+        </div>
     </div>
     <div id="4_cluster" class="cluster" style="display: none;">
         <h2>Options</h2>

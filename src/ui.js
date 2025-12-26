@@ -23,6 +23,7 @@ function updateUI() {
     );
     $("#fb_view").html("fb = " + formatNum(second_var.fb));
     $("#differentiate_value_view").html("f'("+second_var.differentiate_num.toFixed(1)+") = " + formatNum(differentiate(first_var.fx, second_var.differentiate_num)));
+    $("#differentiate_cnt_view").html("Number of differentiations: " + second_var.difference_cnt);
 }
 
 function make_view_fv(fv) {
