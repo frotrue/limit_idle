@@ -218,11 +218,11 @@ body {
 }
 
 /* 모바일 화면 최적화 (너비가 너무 좁을 때 1줄로 변경) */
-@media (max-width: 500px) {
-    #first_upgrade_buttons, #second_upgrade_buttons {
-        grid-template-columns: 1fr;
-    }
-}
+/*@media (max-width: 500px) {*/
+/*    #first_upgrade_buttons, #second_upgrade_buttons {*/
+/*        grid-template-columns: 1fr;*/
+/*    }*/
+/*}*/
 
 
 /* --- Auto Cluster Styles --- */
