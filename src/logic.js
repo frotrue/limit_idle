@@ -350,4 +350,4 @@ load();
 requestAnimationFrame(coreGameLoop);
 let auto_upgrade = setInterval(autoupgrade, 100);
 let loop = setInterval(calc_fv_loop,100);
-let autosave = setInterval(save,150000)
+let autosave = setInterval(save,60000)
