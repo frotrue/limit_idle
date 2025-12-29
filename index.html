@@ -84,14 +84,16 @@
         </div>
     </div>
     <div id="3_cluster" class="cluster" style="display: none;">
-        <h2>Auto Automation</h2>
+        <h2>Auto</h2>
         <div class="top">
             <p class="blue_view" id="differentiate_cnt_view">Number of Differentiate : 0</p>
         </div>
+        <div id="auto_need" class="blue_view" style="display: inline-block">
+            Need one differential
+        </div>
+        <div id="auto_upgrade_container" style="display: none">
 
-        <div id="auto_upgrade_container">
-
-            <div class="auto_card">
+            <div class="auto_card" id="auto_0">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade Constant term</span>
                     <span class="auto_status status_inactive">Waiting</span>
@@ -99,11 +101,11 @@
                 <div class="auto_info">
                     <div class="info_row">
                         <span class="label">Interval:</span>
-                        <span class="value" id="auto_Constant_term">10.00s</span>
+                        <span class="value" id="auto_interval_0">10.00s</span>
                     </div>
                     <div class="info_row">
                         <span class="label">Condition:</span>
-                        <span class="value" id="auto_Constant_term_condition">differentiate cnt >= 1</span>
+                        <span class="value" id="auto_condition_0">differentiate cnt >= 2</span>
                     </div>
                 </div>
                 <div class="auto_action">
@@ -115,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="auto_card">
+            <div class="auto_card" id="auto_1">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X</span>
                     <span class="auto_status status_inactive">Waiting</span>
@@ -123,16 +125,64 @@
                 <div class="auto_info">
                     <div class="info_row">
                         <span class="label">Interval:</span>
-                        <span class="value" id="auto_max_x_interval">10.00s</span>
+                        <span class="value" id="auto_interval_1">10.00s</span>
                     </div>
                     <div class="info_row">
                         <span class="label">Condition:</span>
-                        <span class="value" id="auto_max_x_condition">differentiate cnt >= 3</span>
+                        <span class="value" id="auto_condition_1">differentiate cnt >= 3</span>
                     </div>
                 </div>
                 <div class="auto_action">
                     <label class="toggle_switch">
                         <input type="checkbox" id="auto_toggle_1" onchange="autoupgrade_toggle(1)">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle_label">Active</span>
+                </div>
+            </div>
+
+            <div class="auto_card" id="auto_2">
+                <div class="auto_header">
+                    <span class="auto_title">Upgrade X²</span>
+                    <span class="auto_status status_inactive">Waiting</span>
+                </div>
+                <div class="auto_info">
+                    <div class="info_row">
+                        <span class="label">Interval:</span>
+                        <span class="value" id="auto_interval_2">10.00s</span>
+                    </div>
+                    <div class="info_row">
+                        <span class="label">Condition:</span>
+                        <span class="value" id="auto_condition_2">differentiate cnt >= 5</span>
+                    </div>
+                </div>
+                <div class="auto_action">
+                    <label class="toggle_switch">
+                        <input type="checkbox" id="auto_toggle_2" onchange="autoupgrade_toggle(2)">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle_label">Active</span>
+                </div>
+            </div>
+
+            <div class="auto_card" id="auto_3">
+                <div class="auto_header">
+                    <span class="auto_title">Upgrade X³</span>
+                    <span class="auto_status status_inactive">Waiting</span>
+                </div>
+                <div class="auto_info">
+                    <div class="info_row">
+                        <span class="label">Interval:</span>
+                        <span class="value" id="auto_interval_3">10.00s</span>
+                    </div>
+                    <div class="info_row">
+                        <span class="label">Condition:</span>
+                        <span class="value" id="auto_condition_3">differentiate cnt >= 10</span>
+                    </div>
+                </div>
+                <div class="auto_action">
+                    <label class="toggle_switch">
+                        <input type="checkbox" id="auto_toggle_3" onchange="autoupgrade_toggle(3)">
                         <span class="slider"></span>
                     </label>
                     <span class="toggle_label">Active</span>

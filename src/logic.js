@@ -27,18 +27,18 @@ upgrade_button_data = {
     x_increase: {price: new Decimal(10), count: 0},
 }
 second_var = {
-    fb : new Decimal(0), // 미분 보너스
+    fb : new Decimal(0),
     differentiate_num : new Decimal(0.1),
     difference_cnt : new Decimal(0)
 };
 
-// 게임 데이터를 저장하는 객체
 game_data = {
     auto: {
+        "auto_show" : false,
         0: {
             active: false,
             interval: 10000,
-            condition: 1
+            condition: 2
         },
         1: {
             active: false,
@@ -54,6 +54,51 @@ game_data = {
             active: false,
             interval: 10000,
             condition: 10
+        },
+        4: {
+            active: false,
+            interval: 10000,
+            condition: 15
+        },
+        5: {
+            active: false,
+            interval: 10000,
+            condition: 20
+        },
+        6: {
+            active: false,
+            interval: 10000,
+            condition: 30
+        },
+        7: {
+            active: false,
+            interval: 10000,
+            condition: 40
+        },
+        8: {
+            active: false,
+            interval: 10000,
+            condition: 50
+        },
+        9: {
+            active: false,
+            interval: 10000,
+            condition: 65
+        },
+        10: {
+            active: false,
+            interval: 10000,
+            condition: 80
+        },
+        11: {
+            active: false,
+            interval: 10000,
+            condition: 100
+        },
+        12 : {
+            active: false,
+            interval: 10000,
+            condition: 150
         }
     }
 };
@@ -97,6 +142,9 @@ function resetUpgradeButtonDataVar() {
         upgrade_button_data["x_increase"]= {price: new Decimal(10), count: 0};
 }
 
+function resetgamedata(){
+    game_data.auto.auto_show = false;
+}
 function toSuperscript(num) {
     if (num === 0 || num === 1) return '';
     return String(num).split('').map(d => SUPERSCRIPT_MAP[d] || d).join('');
@@ -166,6 +214,11 @@ function differentiate_bt() {
     let data = second_var.fb
     // let cost = first_var.fv
     if (first_var.fv.gte(new Decimal("1e10"))) {
+        if (second_var.difference_cnt.gte(new Decimal(1))) {
+            $("auto_upgrade_container").css("display", "inline-block");
+            game_data.auto.auto_show = true;
+            save()
+        }
         let diff_value = differentiate(first_var.fx, second_var.differentiate_num);
         second_var.fb = second_var.fb.plus(diff_value);
         second_var.difference_cnt = second_var.difference_cnt.plus(1);
@@ -218,19 +271,15 @@ function load(){ // made by gemini 3.0 pro
         const savedSecondVar = localStorage.getItem("second_var");
         const savedGameData = localStorage.getItem("game_data");
 
-        // 2. 데이터가 존재하는지 확인 후 복구
         if (savedFirstVar && savedUpgradeData && savedSecondVar) {
 
-            // --- first_var 복구 ---
             const parsedFirst = JSON.parse(savedFirstVar);
             first_var.fv = new Decimal(parsedFirst.fv);
             first_var.current_x = new Decimal(parsedFirst.current_x);
             first_var.max_x = new Decimal(parsedFirst.max_x);
             first_var.x_increase = new Decimal(parsedFirst.x_increase);
-            // 배열 내부의 각 요소를 다시 Decimal로 변환
             first_var.fx = parsedFirst.fx.map(val => new Decimal(val));
 
-            // --- upgrade_button_data 복구 ---
             const parsedUpgrade = JSON.parse(savedUpgradeData);
             for (let key in parsedUpgrade) {
                 upgrade_button_data[key] = {
@@ -239,29 +288,26 @@ function load(){ // made by gemini 3.0 pro
                 };
             }
 
-            // --- second_var 복구 ---
             const parsedSecond = JSON.parse(savedSecondVar);
             second_var.fb = new Decimal(parsedSecond.fb);
             second_var.differentiate_num = new Decimal(parsedSecond.differentiate_num);
             second_var.difference_cnt = new Decimal(parsedSecond.difference_cnt);
 
-            // --- game_data 복구 ---
             const parsedGame = JSON.parse(savedGameData);
+            game_data.auto.auto_show = parsedGame.auto.auto_show;
             Object.keys(parsedGame.auto).forEach(key => {
-                // 기존 game_data에 해당 키가 있을 때만 덮어쓰기 (새 업데이트 대비)
                 if (game_data.auto[key]) {
                     game_data.auto[key].active = parsedGame.auto[key].active;
                     game_data.auto[key].interval = parsedGame.auto[key].interval;
                     game_data.auto[key].condition = parsedGame.auto[key].condition;
 
-                    // 스케줄러를 사용 중이라면 실행 시간 초기화
                     game_data.auto[key].lastRun = Date.now();
                 }
             });
 
 
             $(document).ready(function() {
-                refreshUIAfterLoad(); // 페이지 로드 완료 후 실행
+                refreshUIAfterLoad();
             });
             console.log("게임 데이터를 불러왔습니다.");
         } else {
@@ -269,6 +315,14 @@ function load(){ // made by gemini 3.0 pro
     }
 }
 function refreshUIAfterLoad() {
+    if (game_data.auto.auto_show === true){
+        $("#auto_upgrade_container").css("display", "grid");
+        $("#auto_need").css("display", "none");
+    }
+    else{
+        $("#auto_upgrade_container").css("display", "none");
+        $("#auto_need").css("display", "inline-block");
+    }
     for (let i = 0; i <= 12; i++) {
         let data = upgrade_button_data[i];
         let label = i === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(i);
@@ -286,8 +340,6 @@ function refreshUIAfterLoad() {
 function updateAutoUpgradeUI() {
     Object.keys(game_data.auto).forEach(i => {
         const isActive = game_data.auto[i].active;
-
-        // 규칙적인 ID 사용 시 한 줄로 끝남
         $(`#auto_toggle_${i}`).prop("checked", isActive);
 
         const $card = $(`#auto_toggle_${i}`).closest('.auto_card');
@@ -303,14 +355,17 @@ const gameData = {
 };
 
 function autoupgrade_toggle(index) {
-    const isChecked = $(`#auto_toggle_${index}`).is(":checked");
-    game_data.auto[index].active = isChecked;
-
-    updateAutoUpgradeUI();
+    if (game_data.auto[index].condition <= second_var.difference_cnt){
+        const isChecked = $(`#auto_toggle_${index}`).is(":checked");
+        game_data.auto[index].active = isChecked;
+        updateAutoUpgradeUI();
+    }
+    else {
+        return 0;
+    }
 }
 
 
-// 1. 초기화: 각 항목에 마지막 실행 시간을 저장할 변수 추가 (최초 1회 실행)
 Object.values(game_data.auto).forEach(item => {
     item.lastRun = Date.now();
 });
@@ -322,16 +377,12 @@ function autoupgrade() { // made by gemini 3.0 flash
     Object.keys(game_data.auto).forEach(key => {
         const item = game_data.auto[key];
 
-        // 활성화 상태이고, 설정된 인터벌 시간이 지났는지 확인
         if (item.active && (now - item.lastRun >= item.interval)&&$("#"+key+"_x_upgrade_bt").css("display")!=="none") {
 
-            // 업그레이드 실행
             upgrade_buttons(key);
 
-            // 마지막 실행 시간 업데이트 (현재 시간으로 갱신)
             item.lastRun = now;
 
-            // console.log(`${key}번 자동 업그레이드 실행됨`);
         }
     });
 }
