@@ -95,10 +95,20 @@ game_data = {
             interval: 10000,
             condition: 100
         },
-        12 : {
+        // 12 : {
+        //     active: false,
+        //     interval: 10000,
+        //     condition: 150
+        // }
+        101:{
             active: false,
             interval: 10000,
-            condition: 150
+            condition: 20
+        },
+        102:{
+            active: false,
+            interval: 10000,
+            condition: 20
         }
     }
 };
@@ -204,6 +214,9 @@ function other_upgrade_buttons(n) {
             first_var.fv = first_var.fv.minus(data.price);
             first_var.x_increase = first_var.x_increase.plus(new Decimal(0.01));
             data.count++;
+            if (data.count % 10 === 0) {
+                first_var.x_increase = first_var.x_increase.mul(new Decimal(1.3));
+            }
             data.price = data.price.times(new Decimal(1.5));
             $("#x_increase_upgrade_bt").text("Price: " + formatNum(data.price));
         }
@@ -364,6 +377,11 @@ function autoupgrade_toggle(index) {
         return 0;
     }
 }
+function autoupgrade_all_on(){
+    for (let i = 0; i <= 11; i++) {
+        autoupgrade_toggle(i);
+    }
+}
 
 
 Object.values(game_data.auto).forEach(item => {
@@ -378,11 +396,13 @@ function autoupgrade() { // made by gemini 3.0 flash
         const item = game_data.auto[key];
 
         if (item.active && (now - item.lastRun >= item.interval)&&$("#"+key+"_x_upgrade_bt").css("display")!=="none") {
-
-            upgrade_buttons(key);
-
+            if (key == 101 || key == 102) {
+                other_upgrade_buttons(key-100);
+            }
+            else{
+                upgrade_buttons(key);
+            }
             item.lastRun = now;
-
         }
     });
 }

@@ -92,7 +92,21 @@
             Need one differential
         </div>
         <div id="auto_upgrade_container" style="display: none">
-
+<!--            todo 전체 on/off 기능 구현(현재 작동안됨)-->
+            <div class="" id="auto_all_on">
+                <div class="auto_info">
+                    <button class="upgrade_bt">
+                        <span class="auto_title">all Auto Upgrades activite</span>
+                    </button>
+                </div>
+            </div>
+            <div class="" id="auto_all_off">
+                <div class="auto_info">
+                    <button class="upgrade_bt" onclick="">
+                        <span class="auto_title">all Auto Upgrades activite</span>
+                    </button>
+                </div>
+            </div>
             <div class="auto_card" id="auto_0">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁰</span>
@@ -116,7 +130,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_1">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X¹</span>
@@ -140,7 +153,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_2">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X²</span>
@@ -164,7 +176,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_3">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X³</span>
@@ -188,7 +199,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_4">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁴</span>
@@ -212,7 +222,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_5">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁵</span>
@@ -236,7 +245,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_6">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁶</span>
@@ -260,7 +268,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_7">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁷</span>
@@ -284,7 +291,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_8">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁸</span>
@@ -308,7 +314,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_9">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X⁹</span>
@@ -332,7 +337,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_10">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X¹⁰</span>
@@ -356,7 +360,6 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
             <div class="auto_card" id="auto_11">
                 <div class="auto_header">
                     <span class="auto_title">Upgrade X¹¹</span>
@@ -380,25 +383,47 @@
                     <span class="toggle_label">Active</span>
                 </div>
             </div>
-
-            <div class="auto_card" id="auto_12">
+            <div class="auto_card" id="auto_101">
                 <div class="auto_header">
-                    <span class="auto_title">Upgrade X¹²</span>
+                    <span class="auto_title">Upgrade Max X</span>
                     <span class="auto_status status_inactive">Waiting</span>
                 </div>
                 <div class="auto_info">
                     <div class="info_row">
                         <span class="label">Interval:</span>
-                        <span class="value" id="auto_interval_12">10.00s</span>
+                        <span class="value" id="auto_interval_101">10.00s</span>
                     </div>
                     <div class="info_row">
                         <span class="label">Condition:</span>
-                        <span class="value" id="auto_condition_12">differentiate cnt >= 150</span>
+                        <span class="value" id="auto_condition_101">differentiate cnt >= 20</span>
                     </div>
                 </div>
                 <div class="auto_action">
                     <label class="toggle_switch">
-                        <input type="checkbox" id="auto_toggle_12" onchange="autoupgrade_toggle(12)">
+                        <input type="checkbox" id="auto_toggle_101" onchange="autoupgrade_toggle(101)">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle_label">Active</span>
+                </div>
+            </div>
+            <div class="auto_card" id="auto_102">
+                <div class="auto_header">
+                    <span class="auto_title">Upgrade X increse</span>
+                    <span class="auto_status status_inactive">Waiting</span>
+                </div>
+                <div class="auto_info">
+                    <div class="info_row">
+                        <span class="label">Interval:</span>
+                        <span class="value" id="auto_interval_102">10.00s</span>
+                    </div>
+                    <div class="info_row">
+                        <span class="label">Condition:</span>
+                        <span class="value" id="auto_condition_102">differentiate cnt >= 20</span>
+                    </div>
+                </div>
+                <div class="auto_action">
+                    <label class="toggle_switch">
+                        <input type="checkbox" id="auto_toggle_102" onchange="autoupgrade_toggle(102)">
                         <span class="slider"></span>
                     </label>
                     <span class="toggle_label">Active</span>
