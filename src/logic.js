@@ -228,7 +228,7 @@ function differentiate_bt() {
     let data = second_var.fb
     // let cost = first_var.fv
     if (first_var.fv.gte(new Decimal("1e6"))) {
-        if (second_var.difference_cnt.gte(new Decimal(1))) {
+        if (game_data.auto.auto_show===false){
             $("auto_upgrade_container").css("display", "inline-block");
             game_data.auto.auto_show = true;
             save()
