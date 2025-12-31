@@ -203,7 +203,7 @@ function other_upgrade_buttons(n) {
         if (first_var.fv.gte(data.price)) {
             first_var.fv = first_var.fv.minus(data.price);
             first_var.max_x = first_var.max_x.plus(new Decimal(1));
-            first_var.x_increase = first_var.x_increase.mul(new Decimal(1.3));
+            first_var.x_increase = first_var.x_increase.mul(new Decimal(1.1));
             data.count++;
             if (data.count % 10 === 0) {
                 first_var.max_x = first_var.max_x.mul(new Decimal(1.5));
