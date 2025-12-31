@@ -205,6 +205,9 @@ function other_upgrade_buttons(n) {
             first_var.max_x = first_var.max_x.plus(new Decimal(1));
             first_var.x_increase = first_var.x_increase.mul(new Decimal(1.3));
             data.count++;
+            if (data.count % 10 === 0) {
+                first_var.max_x = first_var.max_x.mul(new Decimal(1.5));
+            }
             data.price = data.price.times(new Decimal(2));
             $("#max_x_upgrade_bt").text("Price: " + formatNum(data.price));
         }
