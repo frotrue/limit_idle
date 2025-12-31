@@ -238,6 +238,7 @@ function differentiate_bt() {
         second_var.difference_cnt = second_var.difference_cnt.plus(1);
         resetFirstVar();
         resetUpgradeButtonDataVar();
+        refreshUIAfterLoad();
         $("#max_x_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.max_x.price));
         $("#x_increase_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.x_increase.price));
         for (let i = 0; i <= 12; i++) {
