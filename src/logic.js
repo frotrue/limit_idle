@@ -373,13 +373,13 @@ const gameData = {
 };
 
 function autoupgrade_toggle(index) {
+    const checkbox = $(`#auto_toggle_${index}`);
     if (game_data.auto[index].condition <= second_var.difference_cnt){
-        const isChecked = $(`#auto_toggle_${index}`).is(":checked");
-        game_data.auto[index].active = isChecked;
+        game_data.auto[index].active = checkbox.is(":checked");
         updateAutoUpgradeUI();
     }
     else {
-        return 0;
+        checkbox.prop("checked", !checkbox.is(":checked"));
     }
 }
 function autoupgrade_all_on(){
