@@ -330,7 +330,7 @@ function load(){ // made by gemini 3.0 pro
     }
 }
 function refreshUIAfterLoad() {
-    if (game_data.auto.auto_show === true){
+    if (second_var.difference_cnt.gte(1)){
         $("#auto_upgrade_container").css("display", "grid");
         $("#auto_need").css("display", "none");
     }
