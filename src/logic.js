@@ -203,6 +203,7 @@ function other_upgrade_buttons(n) {
         if (first_var.fv.gte(data.price)) {
             first_var.fv = first_var.fv.minus(data.price);
             first_var.max_x = first_var.max_x.plus(new Decimal(1));
+            first_var.x_increase = first_var.x_increase.mul(new Decimal(1.3));
             data.count++;
             data.price = data.price.times(new Decimal(2.5));
             $("#max_x_upgrade_bt").text("Price: " + formatNum(data.price));
