@@ -35,6 +35,7 @@ second_var = {
 game_data = {
     auto: {
         "auto_show" : false,
+        "auto_save" : 1000,
         0: {
             active: false,
             interval: 10000,
@@ -384,7 +385,34 @@ function autoupgrade_toggle(index) {
 }
 function autoupgrade_all_on(){
     for (let i = 0; i <= 11; i++) {
-        autoupgrade_toggle(i);
+        const toggle = $(`#auto_toggle_${i}`)[0];
+        if (!toggle.checked) {
+            toggle.click();
+        }
+    }
+    const id_101 = $(`#auto_toggle_101`)[0];
+    if (!id_101.checked) {
+        id_101.click();
+    }
+    const id_102 = $(`#auto_toggle_102`)[0];
+    if (!id_102.checked) {
+        id_102.click();
+    }
+}
+function autoupgrade_all_off(){
+    for (let i = 0; i <= 11; i++) {
+        const toggle = $(`#auto_toggle_${i}`)[0];
+        if (toggle.checked) {
+            toggle.click();
+        }
+    }
+    const id_101 = $(`#auto_toggle_101`)[0];
+    if (id_101.checked) {
+        id_101.click();
+    }
+    const id_102 = $(`#auto_toggle_102`)[0];
+    if (id_102.checked) {
+        id_102.click();
     }
 }
 
@@ -399,6 +427,13 @@ function autoupgrade() { // made by gemini 3.0 flash
     // Object.keys를 사용하여 0부터 15까지(또는 그 이상) 모든 키를 순회
     Object.keys(game_data.auto).forEach(key => {
         const item = game_data.auto[key];
+        // if (key==="auto_save"){
+        //     if (now - item.lastRun >= game_data.auto.auto_save) {
+        //         save();
+        //         item.lastRun = now;
+        //     }
+        //     return;
+        // }
 
         if (item.active && (now - item.lastRun >= item.interval)&&$("#"+key+"_x_upgrade_bt").css("display")!=="none") {
             if (key == 101 || key == 102) {
@@ -409,6 +444,7 @@ function autoupgrade() { // made by gemini 3.0 flash
             }
             item.lastRun = now;
         }
+
     });
 }
 
