@@ -27,10 +27,10 @@
 <div id="main">
     <div class="game-header">Limit Idle</div>
     <div id="tabs">
-        <button class="tab-button active" id="1_cluster_change" onclick="change_cluster(1)">📈</button>
-        <button class="tab-button" id="2_cluster_change" onclick="change_cluster(2)">✨</button>
-        <button class="tab-button" id="3_cluster_change" onclick="change_cluster(3)">🌌</button>
-        <button class="tab-button" id="4_cluster_change" onclick="change_cluster(4)">⚙️</button>
+        <button class="tab-button active" id="1_cluster_change" onclick="change_cluster(1)">f(x)</button>
+        <button class="tab-button" id="2_cluster_change" onclick="change_cluster(2)">f'(x)</button>
+        <button class="tab-button" id="3_cluster_change" onclick="change_cluster(3)">Auto</button>
+        <button class="tab-button" id="4_cluster_change" onclick="change_cluster(4)">Setting</button>
     </div>
 
     <div id="1_cluster" class="cluster active">
@@ -430,7 +430,13 @@
     </div>
     <div id="4_cluster" class="cluster" style="display: none;">
         <h2>Options</h2>
-        <p>게임 설정 내용이 여기에 표시됩니다.</p>
+        <div id="setting_buttins">
+            <button class="upgrade_bt" onclick="save();showToast(1)">Save</button>
+            <button class="upgrade_bt" onclick="load();showToast(2)">Load</button>
+        </div>
+
+        <div id="toast" class="toast">Save game!</div>
+        <div id="toast1" class="toast">Load game!</div>
     </div>
 </div>
 </body>

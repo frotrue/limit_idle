@@ -162,7 +162,7 @@ body {
 }
 
 /* --- 업그레이드 버튼 영역 (1, 2 공통 수정) --- */
-#first_upgrade_buttons, #second_upgrade_buttons {
+#first_upgrade_buttons, #second_upgrade_buttons,#setting_buttins {
     display: grid;
     /* 핵심: 무조건 2열로 배치 */
     grid-template-columns: 1fr 1fr;
@@ -382,4 +382,37 @@ input:focus + .slider {
     #auto_upgrade_container {
         grid-template-columns: 1fr;
     }
+}
+.toast {
+    visibility: hidden; /* 평소에는 숨김 */
+    min-width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%); /* 화면 하단 중앙 정렬 */
+    font-size: 14px;
+}
+
+/* 클래스가 추가되면 보여줌 */
+.toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s; /* 0.5초 나타나고, 2.5초 뒤에 0.5초 동안 사라짐 */
+}
+
+/* 나타나는 애니메이션 */
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+}
+
+/* 사라지는 애니메이션 */
+@keyframes fadeout {
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
 }

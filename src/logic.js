@@ -420,6 +420,20 @@ function autoupgrade_all_off(){
 Object.values(game_data.auto).forEach(item => {
     item.lastRun = Date.now();
 });
+function showToast(n) {
+    let toast;
+    if (n===1){
+        toast = document.getElementById("toast");
+    }
+    else {
+        toast = document.getElementById("toast1");
+    }
+
+    toast.className = "toast show";
+    setTimeout(function() {
+        toast.className = toast.className.replace("show", "");
+    }, 3000);
+}
 
 function autoupgrade() { // made by gemini 3.0 flash
     const now = Date.now();
