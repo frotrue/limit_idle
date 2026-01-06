@@ -294,57 +294,79 @@ function save() {
     localStorage.setItem("game_data", JSON.stringify(game_data));
     console.log("게임이 저장되었습니다.");
 }
-function load(){ // made by gemini 3.0 pro
-        // 1. LocalStorage에서 데이터 가져오기
+function load() {
+    try {
         const savedFirstVar = localStorage.getItem("first_var");
         const savedUpgradeData = localStorage.getItem("upgrade_button_data");
         const savedSecondVar = localStorage.getItem("second_var");
         const savedGameData = localStorage.getItem("game_data");
 
-        if (savedFirstVar && savedUpgradeData && savedSecondVar) {
+        // 데이터가 하나라도 없으면 에러를 발생시켜 catch문(초기화)으로 유도
+        if (!savedFirstVar || !savedUpgradeData || !savedSecondVar || !savedGameData) {
+            throw new Error("No save data found");
+        }
 
-            const parsedFirst = JSON.parse(savedFirstVar);
-            first_var.fv = new Decimal(parsedFirst.fv);
-            first_var.current_x = new Decimal(parsedFirst.current_x);
-            first_var.max_x = new Decimal(parsedFirst.max_x);
-            first_var.x_increase = new Decimal(parsedFirst.x_increase);
-            first_var.fx = parsedFirst.fx.map(val => new Decimal(val));
+        const parsedFirst = JSON.parse(savedFirstVar);
+        first_var.fv = new Decimal(parsedFirst.fv);
+        first_var.current_x = new Decimal(parsedFirst.current_x);
+        first_var.max_x = new Decimal(parsedFirst.max_x);
+        first_var.x_increase = new Decimal(parsedFirst.x_increase);
+        first_var.fx = parsedFirst.fx.map(val => new Decimal(val));
 
-            const parsedUpgrade = JSON.parse(savedUpgradeData);
-            for (let key in parsedUpgrade) {
-                upgrade_button_data[key] = {
-                    price: new Decimal(parsedUpgrade[key].price),
-                    count: Number(parsedUpgrade[key].count)
-                };
+        const parsedUpgrade = JSON.parse(savedUpgradeData);
+        for (let key in parsedUpgrade) {
+            upgrade_button_data[key] = {
+                price: new Decimal(parsedUpgrade[key].price),
+                count: Number(parsedUpgrade[key].count)
+            };
+        }
+
+        const parsedSecond = JSON.parse(savedSecondVar);
+        second_var.fb = new Decimal(parsedSecond.fb);
+        second_var.differentiate_num = new Decimal(parsedSecond.differentiate_num);
+        second_var.difference_cnt = new Decimal(parsedSecond.difference_cnt);
+
+        const parsedGame = JSON.parse(savedGameData);
+        // game_data 전체를 덮어쓰거나 필요한 부분을 정밀하게 할당
+        game_data.auto.auto_show = parsedGame.auto.auto_show;
+        Object.keys(parsedGame.auto).forEach(key => {
+            if (game_data.auto[key]) {
+                game_data.auto[key].active = parsedGame.auto[key].active;
+                game_data.auto[key].interval = parsedGame.auto[key].interval;
+                game_data.auto[key].condition = parsedGame.auto[key].condition;
+                game_data.auto[key].lastRun = Date.now();
             }
+        });
+        game_data.tutorial.mission_idx = parsedGame.tutorial.mission_idx;
+        game_data.tutorial.mission_check = parsedGame.tutorial.mission_check;
 
-            const parsedSecond = JSON.parse(savedSecondVar);
-            second_var.fb = new Decimal(parsedSecond.fb);
-            second_var.differentiate_num = new Decimal(parsedSecond.differentiate_num);
-            second_var.difference_cnt = new Decimal(parsedSecond.difference_cnt);
+        console.log("게임 데이터를 불러왔습니다.");
 
-            const parsedGame = JSON.parse(savedGameData);
-            game_data.auto.auto_show = parsedGame.auto.auto_show;
-            Object.keys(parsedGame.auto).forEach(key => {
-                if (game_data.auto[key]) {
-                    game_data.auto[key].active = parsedGame.auto[key].active;
-                    game_data.auto[key].interval = parsedGame.auto[key].interval;
-                    game_data.auto[key].condition = parsedGame.auto[key].condition;
-
-                    game_data.auto[key].lastRun = Date.now();
-                }
-            });
-            game_data.tutorial.mission_idx = parsedGame.tutorial.mission_idx;
-            game_data.tutorial.mission_check = parsedGame.tutorial.mission_check;
+        // UI 업데이트는 데이터 로드가 확실히 끝난 후 실행
+        $(document).ready(function() {
+            refreshUIAfterLoad();
+        });
 
 
-            $(document).ready(function() {
-                refreshUIAfterLoad();
-            });
-            console.log("게임 데이터를 불러왔습니다.");
-        } else {
-            console.log("저장된 데이터가 없습니다.");
+
+    } catch (err) {
+        console.error("로딩 중 에러 발생, 데이터를 초기화합니다:", err);
+        resetAllData(); // 통합 초기화 함수 호출
     }
+}
+function resetAllData() {
+    console.log("모든 데이터를 초기값으로 재설정합니다.");
+    resetFirstVar();
+    resetUpgradeButtonDataVar();
+    resetgamedata();
+
+    // second_var 초기화가 빠져있다면 추가
+    second_var.fb = new Decimal(0);
+    second_var.differentiate_num = new Decimal(0.1);
+    second_var.difference_cnt = new Decimal(0);
+
+    // 초기화 후 UI 반영
+    refreshUIAfterLoad();
 }
 function refreshUIAfterLoad() {
     if (second_var.difference_cnt.gte(1)){
@@ -478,16 +500,11 @@ function coreGameLoop(currentTime) {
 }
 
 // coreGameLoop()
-try{
-    load();
-}
-catch (err){
-    resetgamedata()
-}
 
 // refreshUIAfterLoad()
 
 $(document).ready(function() {
+    load()
     requestAnimationFrame(coreGameLoop);
     let auto_upgrade = setInterval(autoupgrade, 100);
     let loop = setInterval(calc_fv_loop,100);
