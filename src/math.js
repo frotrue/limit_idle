@@ -37,7 +37,7 @@ function differentiate(equation, x) {
 function formatNum(decimal) {
     const d = new Decimal(decimal);
 
-    if (d.lt(1e6)) {
+    if (d.lt(1e1)) {
         return Math.floor(d.toNumber()).toLocaleString();
     }
     return d.toExponential(2).replace("+", "");

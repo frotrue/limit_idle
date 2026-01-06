@@ -14,7 +14,7 @@ function change_cluster(n){
 }
 function updateUI() {
     $("#fv_view").html("fv = " + formatNum(first_var.fv));
-    $("#function_view").html("f(x) = "+make_view_function(first_var.fx));
+    $("#function_view").html("f(x) = "+make_view_function(first_var.fx)+"+ fb");
     $("#fv_view_differentiate").html("fv = " + formatNum(first_var.fv));
     $("#x_progress").html(
         `max x: ${first_var.max_x.toFixed(1)} | ` +
