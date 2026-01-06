@@ -17,6 +17,7 @@
     <script src="src/break_infinity.js"></script>
     <script src="src/math.js"></script>
     <script src="src/ui.js"></script>
+    <script src="src/tutorial.js"></script>
     <script src="src/logic.js"></script>
     <script src="src/data.js"></script>
 <!--    <script src="src/data.js"></script>-->
@@ -41,8 +42,8 @@
         </div>
 
         <div id="first_upgrade_buttons">
-            <button id="0_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(0)">
-                <span>Upgrade X<br><small style="opacity:0.7">Price: 10</small></span>
+            <button id="0_x_upgrade_bt" class="upgrade_bt" onclick="if(game_data.tutorial.mission_check[0]===false &&first_var.fv.gte(upgrade_button_data[0].price) ){game_data.tutorial.mission_check[0]=true;game_data.tutorial.mission_idx=1;nextMission()}upgrade_buttons(0)">
+                <span>Upgrade X⁰<br><small style="opacity:0.7">Price: 10</small></span>
             </button>
             <button id="1_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(1)" style="display: none">Price : 100</button>
             <button id="2_x_upgrade_bt" class="upgrade_bt" onclick="upgrade_buttons(2)" style="display: none">Price : 1e3</button>
@@ -438,6 +439,26 @@
         <div id="toast" class="toast">Save game!</div>
         <div id="toast1" class="toast">Load game!</div>
     </div>
+
+    <div id="mission-widget" class="mission-container">
+        <div class="mission-header">
+            <span class="mission-title">🎯 ACTIVE MISSION</span>
+            <span id="mission-close" class="mission-close-btn">&times;</span>
+        </div>
+
+        <div id="current-mission-area">
+            <p id="mission-name">Loading...</p>
+        </div>
+
+        <div class="mission-footer">
+            <div class="progress-container">
+                <div id="mission-bar" class="progress-bar"></div>
+            </div>
+            <p id="progress-text">STEP 0 / 0</p>
+        </div>
+    </div>
+
+
 </div>
 </body>
 </html>

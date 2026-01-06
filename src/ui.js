@@ -14,7 +14,7 @@ function change_cluster(n){
 }
 function updateUI() {
     $("#fv_view").html("fv = " + formatNum(first_var.fv));
-    $("#function_view").html("f(x) = "+make_view_function(first_var.fx)+"+ fb");
+    $("#function_view").html("f(x) = "+make_view_function(first_var.fx)+" + fb");
     $("#fv_view_differentiate").html("fv = " + formatNum(first_var.fv));
     $("#x_progress").html(
         `max x: ${first_var.max_x.toFixed(1)} | ` +
@@ -30,4 +30,19 @@ function make_view_fv(fv) {
     fv = formatNum(fv);
     // const temp = new Decimal(fv);
     return "fv = " + fv.toString();
+}
+
+
+function button_reset(){
+    for (let i = 0; i <= 12; i++) {
+        let label = i === 0 ? "Upgrade X⁰" : "Upgrade X" + toSuperscript(i);
+        let data = upgrade_button_data[i];
+
+        let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
+        $("#" + i + "_x_upgrade_bt").html(temp);
+
+        if (i > 0) {
+            $("#" + i + "_x_upgrade_bt").css("display", "none");
+        }
+    }
 }

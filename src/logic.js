@@ -33,6 +33,10 @@ second_var = {
 };
 
 game_data = {
+    tutorial:{
+        mission_idx: 0,
+        mission_check: [false, false, false, false]
+    },
     auto: {
         "auto_show" : false,
         "auto_save" : 1000,
@@ -183,6 +187,11 @@ function upgrade_buttons(n) {
 
         if (data.count === 10) {
             $("#" + (n + 1) + "_x_upgrade_bt").css("display", "inline-block");
+            if(game_data.tutorial.mission_check[1]===false && n+1===1){
+                game_data.tutorial.mission_check[1]=true;
+                game_data.tutorial.mission_idx=2;
+                nextMission();
+            }
         }
 
         if (data.count % 10 === 0) {
@@ -192,7 +201,7 @@ function upgrade_buttons(n) {
             first_var.fx[n] = first_var.fx[n].plus(1);
         }
 
-        let label = n === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(n);
+        let label = n === 0 ? "Upgrade X⁰" : "Upgrade X" + toSuperscript(n);
         let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
         $("#" + n + "_x_upgrade_bt").html(temp);
     }
@@ -229,9 +238,14 @@ function other_upgrade_buttons(n) {
 }
 
 function differentiate_bt() {
+
     let data = second_var.fb
     // let cost = first_var.fv
     if (first_var.fv.gte(new Decimal("1e6"))) {
+        if(game_data.tutorial.mission_check[3]===false){
+            game_data.tutorial.mission_check[3]=true;
+            nextMission();
+        }
         if (game_data.auto.auto_show===false){
             $("auto_upgrade_container").css("display", "inline-block");
             game_data.auto.auto_show = true;
@@ -245,17 +259,7 @@ function differentiate_bt() {
         refreshUIAfterLoad();
         $("#max_x_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.max_x.price));
         $("#x_increase_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.x_increase.price));
-        for (let i = 0; i <= 12; i++) {
-            let label = i === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(i);
-            let data = upgrade_button_data[i];
-
-            let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
-            $("#" + i + "_x_upgrade_bt").html(temp);
-
-            if (i > 0) {
-                $("#" + i + "_x_upgrade_bt").css("display", "none");
-            }
-        }
+        button_reset()
     }
 }
 
@@ -323,6 +327,8 @@ function load(){ // made by gemini 3.0 pro
                     game_data.auto[key].lastRun = Date.now();
                 }
             });
+            game_data.tutorial.mission_idx = parsedGame.tutorial.mission_idx;
+            game_data.tutorial.mission_check = parsedGame.tutorial.mission_check;
 
 
             $(document).ready(function() {
@@ -342,16 +348,7 @@ function refreshUIAfterLoad() {
         $("#auto_upgrade_container").css("display", "none");
         $("#auto_need").css("display", "inline-block");
     }
-    for (let i = 0; i <= 12; i++) {
-        let data = upgrade_button_data[i];
-        let label = i === 0 ? "Upgrade num" : "Upgrade X" + toSuperscript(i);
-        let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
-        $("#" + i + "_x_upgrade_bt").html(temp);
-
-        if (upgrade_button_data[i].count >= 10) {
-            $("#" + (i + 1) + "_x_upgrade_bt").css("display", "inline-block");
-        }
-    }
+    button_reset()
     $("#max_x_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.max_x.price));
     $("#x_increase_upgrade_bt").text("Price: " + formatNum(upgrade_button_data.x_increase.price));
     updateAutoUpgradeUI();
@@ -463,6 +460,10 @@ function autoupgrade() { // made by gemini 3.0 flash
 }
 
 function coreGameLoop(currentTime) {
+    if(game_data.tutorial.mission_idx===2&&game_data.tutorial.mission_check[2]===false && first_var.fv.gte(new Decimal("1e6"))){
+        game_data.tutorial.mission_check[2]=true;
+        nextMission();
+    }
     const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
     updateUI();
     gameData.lastUpdateTime = currentTime;
@@ -473,7 +474,10 @@ function coreGameLoop(currentTime) {
 load();
 // refreshUIAfterLoad()
 
-requestAnimationFrame(coreGameLoop);
-let auto_upgrade = setInterval(autoupgrade, 100);
-let loop = setInterval(calc_fv_loop,100);
-let autosave = setInterval(save,60000)
+$(document).ready(function() {
+    requestAnimationFrame(coreGameLoop);
+    let auto_upgrade = setInterval(autoupgrade, 100);
+    let loop = setInterval(calc_fv_loop,100);
+    let autosave = setInterval(save,60000)
+});
+
