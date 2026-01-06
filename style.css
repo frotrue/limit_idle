@@ -501,3 +501,43 @@ input:focus + .slider {
     text-align: right;
     margin: 0;
 }
+/* --- Mobile Responsive (Width < 600px) --- */
+@media (max-width: 600px) {
+    .mission-container {
+        /* 위치를 우측 중앙에서 하단으로 변경 */
+        right: 10px;
+        left: 10px;
+        top: auto;
+        bottom: 20px;
+        transform: none; /* 중앙 정렬 해제 */
+
+        width: auto; /* 너비를 화면에 맞게 확장 */
+        padding: 12px 15px;
+        border-left: none;
+        border-bottom: 4px solid var(--accent-color); /* 포인트 라인을 하단으로 */
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
+    }
+
+    /* 모바일에서는 공간 절약을 위해 레이아웃을 가로로 한 줄 배치 */
+    #current-mission-area {
+        min-height: auto;
+        padding: 5px 0 10px 0;
+    }
+
+    #mission-name {
+        font-size: 0.85rem;
+    }
+
+    .mission-header {
+        margin-bottom: 8px;
+        padding-bottom: 5px;
+    }
+
+    .mission-title {
+        font-size: 0.7rem;
+    }
+
+    .mission-footer {
+        padding-top: 8px;
+    }
+}
