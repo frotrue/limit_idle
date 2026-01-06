@@ -159,6 +159,13 @@ function resetUpgradeButtonDataVar() {
 
 function resetgamedata(){
     game_data.auto.auto_show = false;
+    game_data.tutorial.mission_check = [false, false, false, false];
+    game_data.tutorial.mission_idx = 0;
+    Object.keys(game_data.auto).forEach(key => {
+        if (key !== "auto_show" && key !== "auto_save") {
+            game_data.auto[key].active = false;
+        }
+    });
 }
 function toSuperscript(num) {
     if (num === 0 || num === 1) return '';
@@ -471,7 +478,13 @@ function coreGameLoop(currentTime) {
 }
 
 // coreGameLoop()
-load();
+try{
+    load();
+}
+catch (err){
+    resetgamedata()
+}
+
 // refreshUIAfterLoad()
 
 $(document).ready(function() {
