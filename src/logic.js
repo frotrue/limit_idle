@@ -361,9 +361,9 @@ function resetAllData() {
     resetgamedata();
 
     // second_var 초기화가 빠져있다면 추가
-    second_var.fb = new Decimal(0);
-    second_var.differentiate_num = new Decimal(0.1);
-    second_var.difference_cnt = new Decimal(0);
+    // second_var.fb = new Decimal(0);
+    // second_var.differentiate_num = new Decimal(0.1);
+    // second_var.difference_cnt = new Decimal(0);
 
     // 초기화 후 UI 반영
     refreshUIAfterLoad();
