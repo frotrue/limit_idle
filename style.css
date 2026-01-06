@@ -501,43 +501,32 @@ input:focus + .slider {
     text-align: right;
     margin: 0;
 }
-/* --- Mobile Responsive (Width < 600px) --- */
+/* 모바일에서 게임 화면을 방해하지 않도록 독립된 상단 바 스타일 */
 @media (max-width: 600px) {
     .mission-container {
-        /* 위치를 우측 중앙에서 하단으로 변경 */
-        right: 10px;
-        left: 10px;
-        top: auto;
-        bottom: 20px;
-        transform: none; /* 중앙 정렬 해제 */
+        /* 하단이 아닌 상단 고정 */
+        position: sticky; /* 혹은 fixed */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        transform: none;
 
-        width: auto; /* 너비를 화면에 맞게 확장 */
-        padding: 12px 15px;
+        width: 100%;
+        border-radius: 0; /* 상단에 딱 붙게 */
         border-left: none;
-        border-bottom: 4px solid var(--accent-color); /* 포인트 라인을 하단으로 */
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
+        border-bottom: 2px solid var(--accent-color);
+        background-color: var(--panel-color);
+
+        /* 박스 그림자를 아래쪽으로 */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        margin-bottom: 10px; /* 게임 내용과의 간격 */
+        z-index: 2000;
     }
 
-    /* 모바일에서는 공간 절약을 위해 레이아웃을 가로로 한 줄 배치 */
-    #current-mission-area {
-        min-height: auto;
-        padding: 5px 0 10px 0;
-    }
-
-    #mission-name {
-        font-size: 0.85rem;
-    }
-
-    .mission-header {
-        margin-bottom: 8px;
-        padding-bottom: 5px;
-    }
-
-    .mission-title {
-        font-size: 0.7rem;
-    }
-
-    .mission-footer {
-        padding-top: 8px;
+    /* 게임 전체 컨테이너에 상단 여백 추가 (미션창 높이만큼) */
+    body {
+        flex-direction: column; /* 위아래 배치 */
+        justify-content: flex-start;
     }
 }
