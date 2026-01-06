@@ -36,6 +36,9 @@ $(document).ready(function() {
         }
     };
     if(game_data.tutorial.mission_idx===3) {
+        return
+    }
+    else{
         $('#mission-widget').delay(1000).fadeIn(500); // 1초 뒤 스르륵 등장
         refreshMission();
     }
