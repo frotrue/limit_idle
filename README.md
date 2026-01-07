@@ -1,6 +1,7 @@
 # Limit Idle
 
 Limit Idle is a small browser-based incremental (idle) game / prototype that explores polynomial-based progression. The player upgrades polynomial coefficients and related stats to increase the value produced by evaluating a polynomial function f(x). Differentiation is a special reset mechanic that converts the current polynomial into an instant bonus and unlocks automation features.
+[demo link](https://frotrue.github.io/limit_idle/)
 
 ## Key ideas
 - The game's core resource is "fv" (function value) produced by evaluating a polynomial f(x) at a progressing x value.
