@@ -301,7 +301,6 @@ function load() {
         const savedSecondVar = localStorage.getItem("second_var");
         const savedGameData = localStorage.getItem("game_data");
 
-        // 데이터가 하나라도 없으면 에러를 발생시켜 catch문(초기화)으로 유도
         if (!savedFirstVar || !savedUpgradeData || !savedSecondVar || !savedGameData) {
             throw new Error("No save data found");
         }
@@ -342,7 +341,6 @@ function load() {
 
         console.log("게임 데이터를 불러왔습니다.");
 
-        // UI 업데이트는 데이터 로드가 확실히 끝난 후 실행
         $(document).ready(function() {
             refreshUIAfterLoad();
         });
@@ -350,12 +348,10 @@ function load() {
 
 
     } catch (err) {
-        console.error("로딩 중 에러 발생, 데이터를 초기화합니다:", err);
         resetAllData(); // 통합 초기화 함수 호출
     }
 }
 function resetAllData() {
-    console.log("모든 데이터를 초기값으로 재설정합니다.");
     resetFirstVar();
     resetUpgradeButtonDataVar();
     resetgamedata();
