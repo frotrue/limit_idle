@@ -360,12 +360,10 @@ function resetAllData() {
     resetUpgradeButtonDataVar();
     resetgamedata();
 
-    // second_var 초기화가 빠져있다면 추가
     // second_var.fb = new Decimal(0);
     // second_var.differentiate_num = new Decimal(0.1);
     // second_var.difference_cnt = new Decimal(0);
 
-    // 초기화 후 UI 반영
     refreshUIAfterLoad();
 }
 function refreshUIAfterLoad() {
@@ -464,7 +462,6 @@ function showToast(n) {
 function autoupgrade() { // made by gemini 3.0 flash
     const now = Date.now();
 
-    // Object.keys를 사용하여 0부터 15까지(또는 그 이상) 모든 키를 순회
     Object.keys(game_data.auto).forEach(key => {
         const item = game_data.auto[key];
         // if (key==="auto_save"){
