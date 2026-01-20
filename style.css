@@ -171,6 +171,15 @@ body {
     border-radius: 8px;
     margin-top: 15px;
 }
+.upgrade_bt_cluster {
+    display: grid;
+    /* 핵심: 무조건 2열로 배치 */
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
 
 #first_upgrade_buttons, #differentiate_buttons {
     background: rgba(255, 255, 255, 0.03);
@@ -183,28 +192,35 @@ body {
 
 /* --- 개별 버튼 스타일 --- */
 .upgrade_bt {
+    /* 기존 스타일 유지 */
     background-color: black;
     border: 1px solid var(--accent-color);
     color: var(--text-main);
-    padding: 15px;
+    padding: 10px 15px; /* 상하 패딩을 조금 조절 */
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
     border-radius: 4px;
-    min-height: 80px;
+    min-height: 90px;
 
-    /* 수직/수평 가운데 정렬 설정 */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 세로 방향 가운데 정렬 */
-    align-items: center;     /* 가로 방향 가운데 정렬 (핵심 수정) */
-    text-align: center;      /* 여러 줄일 경우 텍스트 자체도 중앙 정렬 */
-
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     width: 100%;
+
+    /* 추가 및 수정된 부분 */
+    line-height: 1.1; /* 줄 간격을 타이트하게 고정 */
+}
+
+.upgrade_bt b {
+    display: inline-block;
+    margin: 3px 0; /* 제목 위아래 간격 고정 */
 }
 
 .upgrade_bt span {
-    display: block;
+    vertical-align: middle; /* 지수 문자의 정렬 기준 고정 */
 }
 
 .upgrade_bt:hover {

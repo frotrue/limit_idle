@@ -69,15 +69,25 @@
     </div>
     <div id="2_cluster" class="cluster" style="display: none;">
         <div class="top">
-            <p id="fv_view_differentiate" class="blue_view">0.00</p>
-            <p id="fb_view" class="fv_main_view">fb = 0</p>
+<!--            <p id="fv_view_differentiate" class="blue_view">0.00</p>-->
+            <p id="fb_view" class="blue_view">fb = 0</p>
+            <p id="dv_view" class="fv_main_view">0</p>
             <p id="differentiate_value_view" class="differentiate_progress">f'(1) = 0</p>
         </div>
         <br>
+        <div class="upgrade_bt_cluster"></div>
         <div id="differentiate_buttons">
             <button id="differentiate_upgrade_bt" class="upgrade_bt" onclick="differentiate_bt()">
                 <span>Differentiate<br><small style="opacity:0.7" id="differentiate_upgrade_price">fv > 1e6</small></span>
             </button>
+        </div>
+        <div class="upgrade_bt_cluster">
+            <div id="differentiate_input_upgrade">
+                <button class="upgrade_bt" id="differentiate_bt" onclick="differentiate_upgrade()">
+                    <span>Input Variable Upgrade<br><small style="opacity:0.7" id="differentiate_input">1 dv</small></span>
+                </button>
+            </div>
+
         </div>
     </div>
     <div id="3_cluster" class="cluster" style="display: none;">
@@ -434,10 +444,12 @@
         <div id="setting_buttins">
             <button class="upgrade_bt" onclick="save();showToast(1)">Save</button>
             <button class="upgrade_bt" onclick="load();showToast(2)">Load</button>
+            <button class="upgrade_bt" onclick="resetAllData();showToast(3)">Reset</button>
         </div>
 
-        <div id="toast" class="toast">Save game!</div>
-        <div id="toast1" class="toast">Load game!</div>
+        <div id="toast1" class="toast">Save game!</div>
+        <div id="toast2" class="toast">Load game!</div>
+        <div id="toast3" class="toast">Reset game!</div>
     </div>
 
     <div id="mission-widget" class="mission-container">

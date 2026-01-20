@@ -28,8 +28,12 @@ upgrade_button_data = {
 }
 second_var = {
     fb : new Decimal(0),
+    dv : new Decimal(0),
     differentiate_num : new Decimal(0.1),
-    difference_cnt : new Decimal(0)
+    difference_cnt : new Decimal(0),
+    differentiate_upgrade_data : {
+        price:new Decimal(1),count:0
+    }
 };
 
 game_data = {
@@ -184,21 +188,34 @@ function make_view_function(fx) {
     }
     return result + (terms.join(" + ") || "0");
 }
+function differentiate_upgrade() {
+    let data = second_var.differentiate_upgrade_data;
+    if (second_var.dv.gte(data.price)) {
+        second_var.dv = second_var.dv.minus(data.price);
+        second_var.differentiate_num = second_var.differentiate_num.plus(0.1);
+        data.count++;
+        if (data.count % 10 === 0) {
+            second_var.differentiate_num = second_var.differentiate_num.mul(new Decimal(1.5));
+            data.price = data.price.times(new Decimal(10));
+        }
+
+        let progress = data.count % 10;
+        $("#differentiate_bt").html(
+            `<span style="color:#4CAF50">[ ${progress} / 10 ]</span><br>` +
+            `<b>Input Variable Upgrade</b><br>` +
+            `<span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)} dv</span>`
+        );
+    }
+}
 
 function upgrade_buttons(n) {
     let data = upgrade_button_data[n];
-
     if (first_var.fv.gte(data.price)) {
         first_var.fv = first_var.fv.minus(data.price);
         data.count++;
 
         if (data.count === 10) {
             $("#" + (n + 1) + "_x_upgrade_bt").css("display", "inline-block");
-            // if(game_data.tutorial.mission_check[1]===false && n+1===1){
-            //     game_data.tutorial.mission_check[1]=true;
-            //     game_data.tutorial.mission_idx=2;
-            //     nextMission();
-            // }
         }
 
         if (data.count % 10 === 0) {
@@ -208,8 +225,14 @@ function upgrade_buttons(n) {
             first_var.fx[n] = first_var.fx[n].plus(1);
         }
 
-        let label = n === 0 ? "Upgrade X⁰" : "Upgrade X" + toSuperscript(n);
-        let temp = `<b>${label}</b><br><span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
+        let label = n === 0 ? "X⁰" : "X" + toSuperscript(n);
+        let progress = data.count % 10;
+
+        // 구조 단순화: [0/10] (첫줄) / Upgrade X^n (둘째줄) / Price (셋째줄)
+        let temp = `<span style="color:#4CAF50; font-size:0.9em;">[ ${progress} / 10 ]</span><br>` +
+            `<b>Upgrade ${label}</b><br>` +
+            `<span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`;
+
         $("#" + n + "_x_upgrade_bt").html(temp);
     }
 }
@@ -226,7 +249,14 @@ function other_upgrade_buttons(n) {
                 first_var.max_x = first_var.max_x.mul(new Decimal(1.5));
             }
             data.price = data.price.times(new Decimal(2));
-            $("#max_x_upgrade_bt").text("Price: " + formatNum(data.price));
+
+            let progress = data.count % 10;
+            // 버튼 내부의 전체 구조를 갱신
+            $("#max_x_upgrade").html(
+                `<span style="color:#4CAF50; font-size:0.9em;">[ ${progress} / 10 ]</span><br>` +
+                `<b>Upgrade Max X</b><br>` +
+                `<span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`
+            );
         }
     }
     if (n === 2) { // x_increase
@@ -239,20 +269,20 @@ function other_upgrade_buttons(n) {
                 first_var.x_increase = first_var.x_increase.mul(new Decimal(1.3));
             }
             data.price = data.price.times(new Decimal(1.5));
-            $("#x_increase_upgrade_bt").text("Price: " + formatNum(data.price));
+
+            let progress = data.count % 10;
+            $("#x_increase_upgrade").html(
+                `<span style="color:#4CAF50; font-size:0.9em;">[ ${progress} / 10 ]</span><br>` +
+                `<b>Upgrade X Increase</b><br>` +
+                `<span style="font-size:0.8em; color:#888">Price: ${formatNum(data.price)}</span>`
+            );
         }
     }
 }
 
 function differentiate_bt() {
 
-    let data = second_var.fb
-    // let cost = first_var.fv
     if (first_var.fv.gte(new Decimal("1e6"))) {
-        // if(game_data.tutorial.mission_check[3]===false){
-        //     game_data.tutorial.mission_check[3]=true;
-        //     nextMission();
-        // }
         if (game_data.auto.auto_show===false){
             $("auto_upgrade_container").css("display", "inline-block");
             game_data.auto.auto_show = true;
@@ -260,7 +290,9 @@ function differentiate_bt() {
         }
         let diff_value = differentiate(first_var.fx, second_var.differentiate_num);
         second_var.fb = second_var.fb.plus(diff_value);
+        second_var.dv = second_var.dv.plus(diff_value);
         second_var.difference_cnt = second_var.difference_cnt.plus(1);
+
         resetFirstVar();
         resetUpgradeButtonDataVar();
         refreshUIAfterLoad();
@@ -269,7 +301,6 @@ function differentiate_bt() {
         button_reset()
     }
 }
-
 function calc_fv_loop() {
     if (first_var.current_x.lt(first_var.max_x)) {
         first_var.current_x = first_var.current_x.plus(first_var.x_increase);
@@ -282,11 +313,6 @@ function calc_fv_loop() {
     }
     // setTimeout(calc_fv_loop, 100);
 }
-
-function save_function(var_name){
-    localStorage.setItem(var_name.toString(), JSON.stringify(var_name));
-}
-
 function save() {
     localStorage.setItem("first_var", JSON.stringify(first_var));
     localStorage.setItem("upgrade_button_data", JSON.stringify(upgrade_button_data));
@@ -323,7 +349,12 @@ function load() {
         const parsedSecond = JSON.parse(savedSecondVar);
         second_var.fb = new Decimal(parsedSecond.fb);
         second_var.differentiate_num = new Decimal(parsedSecond.differentiate_num);
+        second_var.dv = new Decimal(parsedSecond.dv)
         second_var.difference_cnt = new Decimal(parsedSecond.difference_cnt);
+        second_var.differentiate_upgrade_data = {
+            price: new Decimal(parsedSecond.differentiate_upgrade_data.price),
+            count: Number(parsedSecond.differentiate_upgrade_data.count)
+        };
 
         const parsedGame = JSON.parse(savedGameData);
         // game_data 전체를 덮어쓰거나 필요한 부분을 정밀하게 할당
@@ -356,9 +387,12 @@ function resetAllData() {
     resetUpgradeButtonDataVar();
     resetgamedata();
 
-    // second_var.fb = new Decimal(0);
-    // second_var.differentiate_num = new Decimal(0.1);
-    // second_var.difference_cnt = new Decimal(0);
+    second_var.fb = new Decimal(0);
+    second_var.differentiate_num = new Decimal(0.1);
+    second_var.difference_cnt = new Decimal(0);
+    second_var.differentiate_upgrade_data = {price:new Decimal(1),count:0
+    };
+    second_var.dv = new Decimal(0);
 
     refreshUIAfterLoad();
 }
@@ -392,7 +426,6 @@ function updateAutoUpgradeUI() {
 const gameData = {
     lastUpdateTime: performance.now()
 };
-
 function autoupgrade_toggle(index) {
     const checkbox = $(`#auto_toggle_${index}`);
     if (game_data.auto[index].condition <= second_var.difference_cnt){
@@ -435,38 +468,21 @@ function autoupgrade_all_off(){
         id_102.click();
     }
 }
-
-
 Object.values(game_data.auto).forEach(item => {
     item.lastRun = Date.now();
 });
 function showToast(n) {
-    let toast;
-    if (n===1){
-        toast = document.getElementById("toast");
-    }
-    else {
-        toast = document.getElementById("toast1");
-    }
-
+    let toast = document.getElementById("toast"+n);
     toast.className = "toast show";
     setTimeout(function() {
         toast.className = toast.className.replace("show", "");
     }, 3000);
 }
-
 function autoupgrade() { // made by gemini 3.0 flash
     const now = Date.now();
 
     Object.keys(game_data.auto).forEach(key => {
         const item = game_data.auto[key];
-        // if (key==="auto_save"){
-        //     if (now - item.lastRun >= game_data.auto.auto_save) {
-        //         save();
-        //         item.lastRun = now;
-        //     }
-        //     return;
-        // }
 
         if (item.active && (now - item.lastRun >= item.interval)&&$("#"+key+"_x_upgrade_bt").css("display")!=="none") {
             if (key == 101 || key == 102) {
@@ -480,7 +496,6 @@ function autoupgrade() { // made by gemini 3.0 flash
 
     });
 }
-
 function coreGameLoop(currentTime) {
     // if(game_data.tutorial.mission_idx===2&&game_data.tutorial.mission_check[2]===false && first_var.fv.gte(new Decimal("1e6"))){
     //     game_data.tutorial.mission_check[2]=true;
@@ -491,11 +506,6 @@ function coreGameLoop(currentTime) {
     gameData.lastUpdateTime = currentTime;
     requestAnimationFrame(coreGameLoop);
 }
-
-// coreGameLoop()
-
-// refreshUIAfterLoad()
-
 $(document).ready(function() {
     load()
     requestAnimationFrame(coreGameLoop);
