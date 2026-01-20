@@ -194,11 +194,11 @@ function upgrade_buttons(n) {
 
         if (data.count === 10) {
             $("#" + (n + 1) + "_x_upgrade_bt").css("display", "inline-block");
-            if(game_data.tutorial.mission_check[1]===false && n+1===1){
-                game_data.tutorial.mission_check[1]=true;
-                game_data.tutorial.mission_idx=2;
-                nextMission();
-            }
+            // if(game_data.tutorial.mission_check[1]===false && n+1===1){
+            //     game_data.tutorial.mission_check[1]=true;
+            //     game_data.tutorial.mission_idx=2;
+            //     nextMission();
+            // }
         }
 
         if (data.count % 10 === 0) {
@@ -249,10 +249,10 @@ function differentiate_bt() {
     let data = second_var.fb
     // let cost = first_var.fv
     if (first_var.fv.gte(new Decimal("1e6"))) {
-        if(game_data.tutorial.mission_check[3]===false){
-            game_data.tutorial.mission_check[3]=true;
-            nextMission();
-        }
+        // if(game_data.tutorial.mission_check[3]===false){
+        //     game_data.tutorial.mission_check[3]=true;
+        //     nextMission();
+        // }
         if (game_data.auto.auto_show===false){
             $("auto_upgrade_container").css("display", "inline-block");
             game_data.auto.auto_show = true;
@@ -336,8 +336,8 @@ function load() {
                 game_data.auto[key].lastRun = Date.now();
             }
         });
-        game_data.tutorial.mission_idx = parsedGame.tutorial.mission_idx;
-        game_data.tutorial.mission_check = parsedGame.tutorial.mission_check;
+        // game_data.tutorial.mission_idx = parsedGame.tutorial.mission_idx;
+        // game_data.tutorial.mission_check = parsedGame.tutorial.mission_check;
 
         console.log("게임 데이터를 불러왔습니다.");
 
@@ -482,10 +482,10 @@ function autoupgrade() { // made by gemini 3.0 flash
 }
 
 function coreGameLoop(currentTime) {
-    if(game_data.tutorial.mission_idx===2&&game_data.tutorial.mission_check[2]===false && first_var.fv.gte(new Decimal("1e6"))){
-        game_data.tutorial.mission_check[2]=true;
-        nextMission();
-    }
+    // if(game_data.tutorial.mission_idx===2&&game_data.tutorial.mission_check[2]===false && first_var.fv.gte(new Decimal("1e6"))){
+    //     game_data.tutorial.mission_check[2]=true;
+    //     nextMission();
+    // }
     const deltaTime = (currentTime - gameData.lastUpdateTime) / 1000;
     updateUI();
     gameData.lastUpdateTime = currentTime;
