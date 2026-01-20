@@ -17,6 +17,7 @@ $(document).ready(function() {
                 $(this).text(mission.text).fadeIn(200);
             });
 
+
             const progressPercent = ((currentIdx) / missionList.length) * 100;
             $('#mission-bar').css('width', progressPercent + '%');
             $('#progress-text').text(`MISSION ${currentIdx + 1} / ${missionList.length}`);
