@@ -44,6 +44,10 @@ game_data = {
     auto: {
         "auto_show" : false,
         "auto_save" : 1000,
+        "auto_interval" : {
+            price : new Decimal("1e3"),
+            interval : 10000,
+        },
         0: {
             active: false,
             interval: 10000,
@@ -142,7 +146,6 @@ function resetFirstVar() {
     first_var.x_increase = new Decimal(0.05);
     first_var.fx = [new Decimal(1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(v => new Decimal(v));
 }
-
 function resetUpgradeButtonDataVar() {
         upgrade_button_data[0] = {price: new Decimal(10), count: 1};
         upgrade_button_data[1]= {price: new Decimal(100), count: 0};
@@ -160,7 +163,6 @@ function resetUpgradeButtonDataVar() {
         upgrade_button_data["max_x"]= {price: new Decimal("1e3"), count: 0};
         upgrade_button_data["x_increase"]= {price: new Decimal(10), count: 0};
 }
-
 function resetgamedata(){
     game_data.auto.auto_show = false;
     game_data.tutorial.mission_check = [false, false, false, false];
@@ -175,7 +177,6 @@ function toSuperscript(num) {
     if (num === 0 || num === 1) return '';
     return String(num).split('').map(d => SUPERSCRIPT_MAP[d] || d).join('');
 }
-
 function make_view_function(fx) {
     let result = "";
     let terms = [];
@@ -207,7 +208,6 @@ function differentiate_upgrade() {
         );
     }
 }
-
 function upgrade_buttons(n) {
     let data = upgrade_button_data[n];
     if (first_var.fv.gte(data.price)) {
@@ -236,7 +236,6 @@ function upgrade_buttons(n) {
         $("#" + n + "_x_upgrade_bt").html(temp);
     }
 }
-
 function other_upgrade_buttons(n) {
     if (n === 1) { // max_x
         let data = upgrade_button_data["max_x"];
@@ -279,7 +278,6 @@ function other_upgrade_buttons(n) {
         }
     }
 }
-
 function differentiate_bt() {
 
     if (first_var.fv.gte(new Decimal("1e6"))) {
